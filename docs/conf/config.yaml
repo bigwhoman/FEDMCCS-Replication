@@ -1,0 +1,10 @@
+num_clients: 10
+num_rounds: 1
+num_epochs: 1
+batch_size: 10
+iid: False
+balance: False
+client_fraction: 0.5
+expected_maximum: 0.2
+learning_rate: 0.1
+save_path: "docs/results"

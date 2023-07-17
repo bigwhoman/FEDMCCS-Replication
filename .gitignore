@@ -1,0 +1,5 @@
+dataset/
+outputs/
+playground.ipynb
+multirun/
+__pycache__
