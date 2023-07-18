@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  client1:
+    build: .
+    volumes:
+      - .:/client
+    ports:
+      - 8080:8080
+  client2:
+    build: .
+    volumes:
+      - .:/client
+    ports:
+      - 8080:8080
