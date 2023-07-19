@@ -3,3 +3,4 @@ outputs/
 playground.ipynb
 multirun/
 __pycache__
+docker/data

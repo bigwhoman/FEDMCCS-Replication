@@ -1,14 +1,14 @@
-version: '3.8'
 services:
   client1:
     build: .
+    extra_hosts:
+    - host.docker.internal:host-gateway
     volumes:
-      - .:/client
-    ports:
-      - 8080:8080
+    - .:/client
   client2:
     build: .
+    extra_hosts:
+    - host.docker.internal:host-gateway
     volumes:
-      - .:/client
-    ports:
-      - 8080:8080
+    - .:/client
+version: '3.8'
