@@ -53,7 +53,7 @@ func main() {
 			log.Println("cannot accept connection:", err)
 			break
 		}
-		connID := connectionIDCounter.Add(2) // add two, because we are creating two goroutines
+		connID := connectionIDCounter.Add(1)
 		// Connect to remote
 		remoteConn, err := net.Dial("tcp", forwardAddress)
 		if err != nil {
@@ -63,7 +63,7 @@ func main() {
 		// Add to list
 		connectionMapMutex.Lock()
 		connectionMap[connID] = ProxiedConnections{conn, remoteConn}
-		activeConnectionCounter.Add(1)
+		activeConnectionCounter.Add(2) // add two, because we are creating two goroutines
 		connectionMapMutex.Unlock()
 		// Proxy both ways
 		go proxyConnection(conn, remoteConn, "download", connID)
@@ -82,11 +82,11 @@ func main() {
 
 func proxyConnection(c1 net.Conn, c2 net.Conn, tag string, id uint32) {
 	copied, _ := io.Copy(c1, c2)
-	_ = c1.Close()
-	_ = c2.Close()
-	log.Printf("%s connection %d finished\n", tag, copied)
+	log.Printf("%s connection %d finished with %d bytes trasfered\n", tag, id, copied)
 	connectionMapMutex.Lock()
 	delete(connectionMap, id)
+	_ = c1.Close()
+	_ = c2.Close()
 	connectionMapMutex.Unlock()
 	activeConnectionCounter.Done()
 }
