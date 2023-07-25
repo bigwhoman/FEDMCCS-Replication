@@ -2,7 +2,7 @@
 FROM python:3.8-slim-buster
 
 # Install the Flower library
-RUN pip install flwr
+RUN pip install flwr tqdm
 
 # Install torch
 RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu

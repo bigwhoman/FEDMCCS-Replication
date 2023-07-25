@@ -1,4 +1,3 @@
-import yaml
 import os
 import psutil
 
@@ -36,23 +35,16 @@ def get_cpu_ids(needed: int) -> str:
     current_cpu_counter += needed
     return result
 
-def generate_resources(cpu_cores: int, cpu_util: float, memory_mb: int):
-    limits = {'cpuset-cpus': get_cpu_ids(cpu_cores), 'cpus': str(float(cpu_cores) * cpu_util), 'memory': f"{memory_mb}M"}
-    return {'limits': limits}
+def generate_resources(cpu_cores: int, cpu_util: float, memory_mb: int) -> str:
+    return f"--cpuset-cpus '{get_cpu_ids(cpu_cores)}' --cpus '{float(cpu_cores) * cpu_util}' --memory '{memory_mb}M'"
 
 def generate_compose_file():
-    services = {}
-    for i, client in enumerate(RESOURCES):
-        services[f'client{i+1}'] = {
-            'build': '.',
-            'volumes': ['.:/client'],
-            'extra_hosts': ['host.docker.internal:host-gateway'],
-            'deploy': {'resources': generate_resources(client[0], client[1], client[2])}
-        }
-    compose_dict = {'version': '3.8', 'services': services}
-    
-    with open('docker-compose.yml', 'w') as file:
-        yaml.dump(compose_dict, file, default_flow_style=False)
+    with open('runner.sh', 'w') as runner:
+        runner.write("#!/bin/sh\n")
+        runner.write("docker build --tag 'fed-client' .\n")
+        runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
+        for i, client in enumerate(RESOURCES):
+            runner.write(f"docker run -d --name 'client{i+1}' --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 validate_resources()
 generate_compose_file()  # generate docker-compose file with num_clients clients
