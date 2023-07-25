@@ -2,7 +2,10 @@
 FROM python:3.8-slim-buster
 
 # Install the Flower library
-RUN pip install flwr torch torchvision tqdm
+RUN pip install flwr
+
+# Install torch
+RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
 # Add the client code to the /client directory in the container
 ADD client.py /client/
