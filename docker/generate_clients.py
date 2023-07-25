@@ -40,7 +40,7 @@ def generate_resources(cpu_cores: int, cpu_util: float, memory_mb: int) -> str:
 
 def generate_compose_file():
     with open('runner.sh', 'w') as runner:
-        runner.write("#!/bin/sh\n")
+        runner.write("#!/bin/bash\n")
         runner.write("docker build --tag 'fed-client' .\n")
         runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
         for i, client in enumerate(RESOURCES):
