@@ -1,6 +1,8 @@
+from typing import Dict, Union
 import warnings
 from collections import OrderedDict
 import os
+import psutil
 
 import flwr as fl
 import torch
@@ -92,6 +94,13 @@ class FlowerClient(fl.client.NumPyClient):
         params_dict = zip(net.state_dict().keys(), parameters)
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         net.load_state_dict(state_dict, strict=True)
+
+    def get_properties(config: Dict[str, Union[bool, bytes, float, int, str]]) -> Dict[str, Union[bool, bytes, float, int, str]]:
+        result: Dict[str, Union[bool, bytes, float, int, str]] = {}
+        result["cpu"] = os.cpu_count()
+        result["frequency"] = psutil.cpu_freq().max * float(os.environ['FREQUENCY'])
+        result["memory"] = psutil.virtual_memory().total
+        return result
 
     def fit(self, parameters, config):
         self.set_parameters(parameters)
