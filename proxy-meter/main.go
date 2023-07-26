@@ -1,13 +1,16 @@
 package main
 
 import (
+	"github.com/juju/ratelimit"
 	"io"
 	"log"
 	"net"
 	"os"
 	"os/signal"
+	"strconv"
 	"sync"
 	"sync/atomic"
+	"time"
 )
 
 type ProxiedConnections struct {
@@ -24,6 +27,10 @@ var connectionMapMutex sync.Mutex
 // How many active connections we have?
 var activeConnectionCounter sync.WaitGroup
 
+// How much should we wait before actually proxying data
+var pingDelay time.Duration
+var speedLimit int64
+
 func main() {
 	// Read values
 	listenAddress := os.Getenv("PROXY_LISTEN")
@@ -34,6 +41,13 @@ func main() {
 	if forwardAddress == "" {
 		log.Fatalln("Please set PROXY_FORWARD environment variable")
 	}
+	pingDelay, _ = time.ParseDuration(os.Getenv("PROXY_DELAY"))
+	speedLimit, _ = strconv.ParseInt(os.Getenv("PROXY_SPEED_LIMIT"), 10, 64)
+	// Log
+	log.Printf("Starting proxy\n")
+	log.Printf("Forwarding from %s to %s\n", listenAddress, forwardAddress)
+	log.Printf("Simulating a ping delay of %s\n", pingDelay)
+	log.Printf("Proxy has a speedlimit of %d bytes/second\n", speedLimit)
 	// Start listener
 	l, err := net.Listen("tcp", listenAddress)
 	if err != nil {
@@ -65,9 +79,11 @@ func main() {
 		connectionMap[connID] = ProxiedConnections{conn, remoteConn}
 		activeConnectionCounter.Add(2) // add two, because we are creating two goroutines
 		connectionMapMutex.Unlock()
+		// Simulate ping
+		time.Sleep(pingDelay)
 		// Proxy both ways
-		go proxyConnection(conn, remoteConn, "download", connID)
-		go proxyConnection(remoteConn, conn, "upload", connID)
+		go proxyConnection(conn, remoteConn, "download", conn.RemoteAddr().String(), connID)
+		go proxyConnection(remoteConn, conn, "upload", conn.RemoteAddr().String(), connID)
 	}
 	// Close active connections
 	connectionMapMutex.Lock()
@@ -80,13 +96,26 @@ func main() {
 	activeConnectionCounter.Wait()
 }
 
-func proxyConnection(c1 net.Conn, c2 net.Conn, tag string, id uint32) {
-	copied, _ := io.Copy(c1, c2)
-	log.Printf("%s connection %d finished with %d bytes trasfered\n", tag, id, copied)
+func proxyConnection(c1 net.Conn, c2 net.Conn, tag, localAddress string, id uint32) {
+	// Speed limit if needed
+	var copied int64
+	if speedLimit == 0 {
+		copied, _ = io.Copy(c1, c2)
+	} else {
+		copied, _ = io.Copy(ratelimit.Writer(c1, getBucket()), c2)
+	}
+	log.Printf("%s connection %s (%d) finished with %d bytes trasfered\n", tag, localAddress, id, copied)
 	connectionMapMutex.Lock()
 	delete(connectionMap, id)
 	_ = c1.Close()
 	_ = c2.Close()
 	connectionMapMutex.Unlock()
 	activeConnectionCounter.Done()
+}
+
+// getBucket will get a rate limit bucket which fills at the speed of
+// speedLimit bytes per second
+func getBucket() *ratelimit.Bucket {
+	// Fill the bucket at speed of 1MB per second
+	return ratelimit.NewBucketWithRate(float64(speedLimit), speedLimit)
 }
