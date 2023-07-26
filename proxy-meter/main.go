@@ -1,13 +1,13 @@
 package main
 
 import (
+	"flag"
 	"github.com/juju/ratelimit"
 	"io"
 	"log"
 	"net"
 	"os"
 	"os/signal"
-	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -33,17 +33,20 @@ var speedLimit int64
 
 func main() {
 	// Read values
-	listenAddress := os.Getenv("PROXY_LISTEN")
-	if listenAddress == "" {
-		log.Fatalln("Please set PROXY_LISTEN environment variable")
-	}
-	forwardAddress := os.Getenv("PROXY_FORWARD")
-	if forwardAddress == "" {
-		log.Fatalln("Please set PROXY_FORWARD environment variable")
-	}
-	pingDelay, _ = time.ParseDuration(os.Getenv("PROXY_DELAY"))
-	speedLimit, _ = strconv.ParseInt(os.Getenv("PROXY_SPEED_LIMIT"), 10, 64)
+	var listenAddress, forwardAddress, pingDelayString string
+	flag.StringVar(&listenAddress, "listen", "", "On what port and interface should proxy listen on")
+	flag.StringVar(&forwardAddress, "forward", "", "Where should data be forwarded")
+	flag.StringVar(&pingDelayString, "ping", "0ms", "Ping to the client")
+	flag.Int64Var(&speedLimit, "speed", 0, "Speed of download/upload of client. Should be in bytes/second unit")
+	flag.Parse()
+	pingDelay, _ = time.ParseDuration(pingDelayString)
 	// Log
+	if listenAddress == "" {
+		log.Fatalln("Please set 'listen' argument")
+	}
+	if forwardAddress == "" {
+		log.Fatalln("Please set 'forward' argument")
+	}
 	log.Printf("Starting proxy\n")
 	log.Printf("Forwarding from %s to %s\n", listenAddress, forwardAddress)
 	log.Printf("Simulating a ping delay of %s\n", pingDelay)
@@ -79,8 +82,6 @@ func main() {
 		connectionMap[connID] = ProxiedConnections{conn, remoteConn}
 		activeConnectionCounter.Add(2) // add two, because we are creating two goroutines
 		connectionMapMutex.Unlock()
-		// Simulate ping
-		time.Sleep(pingDelay)
 		// Proxy both ways
 		go proxyConnection(conn, remoteConn, "download", conn.RemoteAddr().String(), connID)
 		go proxyConnection(remoteConn, conn, "upload", conn.RemoteAddr().String(), connID)
@@ -99,11 +100,14 @@ func main() {
 func proxyConnection(c1 net.Conn, c2 net.Conn, tag, localAddress string, id uint32) {
 	// Speed limit if needed
 	var copied int64
-	if speedLimit == 0 {
-		copied, _ = io.Copy(c1, c2)
-	} else {
-		copied, _ = io.Copy(ratelimit.Writer(c1, getBucket()), c2)
+	var writer io.Writer = c1
+	if speedLimit != 0 {
+		writer = ratelimit.Writer(c1, getBucket())
 	}
+	if pingDelay != 0 {
+		writer = PingWriter{writer, pingDelay}
+	}
+	copied, _ = io.Copy(writer, c2)
 	log.Printf("%s connection %s (%d) finished with %d bytes trasfered\n", tag, localAddress, id, copied)
 	connectionMapMutex.Lock()
 	delete(connectionMap, id)

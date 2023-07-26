@@ -1,5 +1,6 @@
 import warnings
 from collections import OrderedDict
+import os
 
 import flwr as fl
 import torch
@@ -105,6 +106,6 @@ class FlowerClient(fl.client.NumPyClient):
 
 # Start Flower client
 fl.client.start_numpy_client(
-    server_address="host.docker.internal:8080",
+    server_address="host.docker.internal:" + os.environ['PORT'],
     client=FlowerClient(),
 )

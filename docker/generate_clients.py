@@ -3,12 +3,16 @@ import psutil
 
 RESOURCES = [
     # In format of client id as the index of resource
-    # -> (cpu cores, cpu core util in range of (0, 1], memory limit in MB)
-    (1, 0.5, 100),
-    (1, 1, 200),
-    (2, 0.75, 500),
-    (1, 0.25, 50)
+    # -> (cpu cores, cpu core util in range of (0, 1], memory limit in MB,
+    #     ping latency, bandwidth)
+    # Use zero for ping and bandwidth to set them to unlimited
+    (1, 0.5, 100, 100, 0),
+    (1, 1, 200, 0, 1024 * 1024),
+    (2, 0.75, 500, 0, 0),
+    (1, 0.25, 50, 50, 1024 * 512)
 ]
+PROXY_PORT_START = 8088
+SERVER_PORT = 8080
 current_cpu_counter = 0
 
 def validate_resources():
@@ -44,7 +48,8 @@ def generate_compose_file():
         runner.write("docker build --tag 'fed-client' .\n")
         runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
         for i, client in enumerate(RESOURCES):
-            runner.write(f"docker run -d --name 'client{i+1}' --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+            runner.write(f"tmux new-session -d -s 'client{i+1}-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:{PROXY_PORT_START+i} --forward 127.0.0.1:{SERVER_PORT} --ping {client[3]}ms --speed {client[4]} &> proxy{i+1}.txt'\n")
+            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 validate_resources()
 generate_compose_file()  # generate docker-compose file with num_clients clients
