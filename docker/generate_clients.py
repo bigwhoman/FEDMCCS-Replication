@@ -7,7 +7,7 @@ RESOURCES = [
     #     ping latency, bandwidth)
     # Use zero for ping and bandwidth to set them to unlimited
     (1, 0.5, 100, 100, 0),
-    (1, 1, 200, 0, 1024 * 1024),
+    # (1, 1, 200, 0, 1024 * 1024),
     (2, 0.75, 500, 0, 0),
     (1, 0.25, 50, 50, 1024 * 512)
 ]
