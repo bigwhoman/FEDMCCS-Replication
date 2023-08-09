@@ -29,6 +29,7 @@ class myClientManager(fl.server.SimpleClientManager):
         min_num_clients: Optional[int] = None,
         criterion: Optional[Criterion] = None,
     ) -> List[ClientProxy]:
+        print("penis")
         # Block until at least num_clients are connected.
         if min_num_clients is None:
             min_num_clients = num_clients
@@ -53,7 +54,9 @@ class myClientManager(fl.server.SimpleClientManager):
             if cid %2 == 0 :
                 print(f"cock {cid}")
                 sampled_cids.append(cid)
-        return [self.clients[cid] for cid in sampled_cids]
+        result = [self.clients[cid] for cid in sampled_cids]
+        print("cock2 ", result)
+        return result
 # Start Flower server
 fl.server.start_server(
     server_address="0.0.0.0:8080",
