@@ -1,12 +1,12 @@
 #!/bin/bash
 docker build --tag 'fed-client' .
-docker rm client{1..4}
-if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then
-	sudo ufw allow 8088/tcp
-fi
-tmux kill-session -t 'client1-proxy'
-tmux new-session -d -s 'client1-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:8088 --forward 127.0.0.1:8080 --ping 100ms --speed 0 &> proxy1.txt'
-docker run -d --name 'client1' --env PORT=8088 --env FREQUENCY=0.5 --add-host=host.docker.internal:host-gateway --cpuset-cpus '0' --cpus '0.5' --memory '100M' fed-client
+docker rm client{1..2}
+# if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then
+# 	sudo ufw allow 8088/tcp
+# fi
+# tmux kill-session -t 'client1-proxy'
+# tmux new-session -d -s 'client1-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:8088 --forward 127.0.0.1:8080 --ping 100ms --speed 0 &> proxy1.txt'
+# docker run -d --name 'client1' --env PORT=8088 --env FREQUENCY=0.5 --add-host=host.docker.internal:host-gateway --cpuset-cpus '0' --cpus '0.5' --memory '100M' fed-client
 if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then
 	sudo ufw allow 8089/tcp
 fi
@@ -19,9 +19,9 @@ fi
 tmux kill-session -t 'client3-proxy'
 tmux new-session -d -s 'client3-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:8090 --forward 127.0.0.1:8080 --ping 0ms --speed 0 &> proxy3.txt'
 docker run -d --name 'client3' --env PORT=8090 --env FREQUENCY=0.75 --add-host=host.docker.internal:host-gateway --cpuset-cpus '2,3' --cpus '1.5' --memory '500M' fed-client
-if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then
-	sudo ufw allow 8091/tcp
-fi
-tmux kill-session -t 'client4-proxy'
-tmux new-session -d -s 'client4-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:8091 --forward 127.0.0.1:8080 --ping 50ms --speed 524288 &> proxy4.txt'
-docker run -d --name 'client4' --env PORT=8091 --env FREQUENCY=0.25 --add-host=host.docker.internal:host-gateway --cpuset-cpus '4' --cpus '0.25' --memory '50M' fed-client
+# if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then
+# 	sudo ufw allow 8091/tcp
+# fi
+# tmux kill-session -t 'client4-proxy'
+# tmux new-session -d -s 'client4-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:8091 --forward 127.0.0.1:8080 --ping 50ms --speed 524288 &> proxy4.txt'
+# docker run -d --name 'client4' --env PORT=8091 --env FREQUENCY=0.25 --add-host=host.docker.internal:host-gateway --cpuset-cpus '4' --cpus '0.25' --memory '50M' fed-client
