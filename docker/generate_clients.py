@@ -39,6 +39,12 @@ def get_cpu_ids(needed: int) -> str:
     current_cpu_counter += needed
     return result
 
+def cpu_frequency() -> int:
+    cpu_info = psutil.cpu_freq()
+    if cpu_info.max == 0:
+        return int(cpu_info.current)
+    return int(cpu_info.max)
+
 def generate_resources(cpu_cores: int, cpu_util: float, memory_mb: int) -> str:
     return f"--cpuset-cpus '{get_cpu_ids(cpu_cores)}' --cpus '{float(cpu_cores) * cpu_util}' --memory '{memory_mb}M'"
 
@@ -53,7 +59,7 @@ def generate_compose_file():
             runner.write('fi\n')
             runner.write(f"tmux kill-session -t 'client{i+1}-proxy'\n")
             runner.write(f"tmux new-session -d -s 'client{i+1}-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:{PROXY_PORT_START+i} --forward 127.0.0.1:{SERVER_PORT} --ping {client[3]}ms --speed {client[4]} &> proxy{i+1}.txt'\n")
-            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(psutil.cpu_freq().max * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 validate_resources()
 generate_compose_file()  # generate docker-compose file with num_clients clients
