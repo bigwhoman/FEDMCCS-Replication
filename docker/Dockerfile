@@ -7,6 +7,9 @@ RUN pip install flwr tqdm
 # Install torch
 RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
+# Install psutils
+RUN pip install psutil
+
 # Add the client code to the /client directory in the container
 ADD client.py /client/
 

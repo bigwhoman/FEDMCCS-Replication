@@ -1,6 +1,8 @@
+from typing import Dict, Union
 import warnings
 from collections import OrderedDict
 import os
+import psutil
 
 import flwr as fl
 import torch
@@ -21,24 +23,22 @@ DEVICE = torch.device("cpu")
 
 
 class Net(nn.Module):
-    """Model (simple CNN adapted from 'PyTorch: A 60 Minute Blitz')"""
-
-    def __init__(self) -> None:
+    def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
+        self.linear1 = torch.nn.Linear(784, 512, bias=True)
+        self.linear2 = torch.nn.Linear(512, 512, bias=True)
+        self.linear3 = torch.nn.Linear(512, 10, bias=True)
+        self.dropout = nn.Dropout(p = 0.2)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 16 * 5 * 5)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        return self.fc3(x)
+    def forward(self, input):
+        # Input is the picture so we flatten it just like before
+        input = input.view(-1, 784)
+        layer1 = nn.functional.relu(self.linear1(input))
+        layer1 = self.dropout(layer1)
+        layer2 = nn.functional.relu(self.linear2(layer1))
+        layer2 = self.dropout(layer2)
+        layer3 = self.linear3(layer2)
+        return layer3
 
 
 def train(net, trainloader, epochs):
@@ -92,6 +92,13 @@ class FlowerClient(fl.client.NumPyClient):
         params_dict = zip(net.state_dict().keys(), parameters)
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         net.load_state_dict(state_dict, strict=True)
+
+    def get_properties(config: Dict[str, Union[bool, bytes, float, int, str]]) -> Dict[str, Union[bool, bytes, float, int, str]]:
+        result: Dict[str, Union[bool, bytes, float, int, str]] = {}
+        result["cpu"] = os.cpu_count()
+        result["frequency"] = psutil.cpu_freq().max * float(os.environ['FREQUENCY'])
+        result["memory"] = psutil.virtual_memory().total
+        return result
 
     def fit(self, parameters, config):
         self.set_parameters(parameters)

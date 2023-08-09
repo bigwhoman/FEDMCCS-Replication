@@ -49,7 +49,7 @@ def generate_compose_file():
         runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
         for i, client in enumerate(RESOURCES):
             runner.write(f"tmux new-session -d -s 'client{i+1}-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:{PROXY_PORT_START+i} --forward 127.0.0.1:{SERVER_PORT} --ping {client[3]}ms --speed {client[4]} &> proxy{i+1}.txt'\n")
-            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --env FREQUENCY={client[1]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 validate_resources()
 generate_compose_file()  # generate docker-compose file with num_clients clients
