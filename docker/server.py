@@ -59,6 +59,6 @@ class myClientManager(fl.server.SimpleClientManager):
 fl.server.start_server(
     server_address="0.0.0.0:8080",
     config=fl.server.ServerConfig(num_rounds=1),
-    client_manager= None,
+    client_manager=myClientManager(),
     strategy=strategy,
 )

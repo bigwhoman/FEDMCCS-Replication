@@ -93,8 +93,8 @@ class FlowerClient(fl.client.NumPyClient):
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         net.load_state_dict(state_dict, strict=True)
 
-    def get_properties(config: Dict[str, Union[bool, bytes, float, int, str]]) -> Dict[str, Union[bool, bytes, float, int, str]]:
-        result: Dict[str, Union[bool, bytes, float, int, str]] = {}
+    def get_properties(*args, **kwargs):
+        result = {}
         result["cpu"] = os.cpu_count()
         result["frequency"] = psutil.cpu_freq().max * float(os.environ['FREQUENCY'])
         result["memory"] = psutil.virtual_memory().total
