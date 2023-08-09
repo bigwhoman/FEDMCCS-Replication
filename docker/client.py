@@ -95,9 +95,11 @@ class FlowerClient(fl.client.NumPyClient):
 
     def get_properties(*args, **kwargs):
         result = {}
-        result["cpu"] = os.cpu_count()
-        result["frequency"] = psutil.cpu_freq().max * float(os.environ['FREQUENCY'])
-        result["memory"] = psutil.virtual_memory().total
+        result["cpu"] = int(os.environ['CORES'])
+        result["frequency"] = int(os.environ['FREQUENCY'])
+        result["memory"] = int(os.environ['MEMORY']) * 1024 * 1024
+        result["ping"] = int(os.environ['PING'])
+        result["speed"] = int(os.environ['BANDWIDTH'])
         return result
 
     def fit(self, parameters, config):
