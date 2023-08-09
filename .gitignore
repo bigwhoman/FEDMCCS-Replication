@@ -4,3 +4,4 @@ playground.ipynb
 multirun/
 __pycache__
 docker/data
+docker/proxy*
