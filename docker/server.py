@@ -1,7 +1,8 @@
 from typing import List, Tuple
-
+import random
 import flwr as fl
 from flwr.common import Metrics
+from flwr.common.typing import GetPropertiesIns
 from flwr.common.logger import log
 from logging import INFO
 from flwr.server.client_proxy import ClientProxy
@@ -49,14 +50,11 @@ class myClientManager(fl.server.SimpleClientManager):
                 num_clients,
             )
             return []
-        sampled_cids = []
-        for cid in available_cids : 
-            if cid %2 == 0 :
-                print(f"cock {cid}")
-                sampled_cids.append(cid)
-        result = [self.clients[cid] for cid in sampled_cids]
-        print("cock2 ", result)
-        return result
+        for client in available_cids:
+            config = GetPropertiesIns({})
+            print(self.clients[client].get_properties(config, None))
+        sampled_cids = random.sample(available_cids, num_clients)
+        return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
 fl.server.start_server(
     server_address="0.0.0.0:8080",
