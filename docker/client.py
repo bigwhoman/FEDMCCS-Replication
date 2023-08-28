@@ -69,7 +69,7 @@ class Net(nn.Module):
         return layer3
 
 
-def train(net, trainloader, epochs) -> tuple[float, float, float, int]:
+def train(net, trainloader, epochs):
     """Train the model on the training set."""
     # Increase a round counter
     global round_counter
