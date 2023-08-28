@@ -6,10 +6,10 @@ RESOURCES = [
     # -> (cpu cores, cpu core util in range of (0, 1], memory limit in MB,
     #     ping latency, bandwidth)
     # Use zero for ping and bandwidth to set them to unlimited
-    (1, 0.5, 100, 100, 0),
-     (1, 1, 200, 0, 1024 * 1024),
+    (1, 0.5, 200, 100, 0),
+    (1, 1, 200, 0, 1024 * 1024),
     (2, 0.75, 500, 0, 0),
-    (1, 0.25, 50, 50, 1024 * 512)
+    (1, 0.25, 200, 50, 1024 * 512)
 ]
 PROXY_PORT_START = 8088
 SERVER_PORT = 8080
@@ -59,7 +59,7 @@ def generate_compose_file():
             runner.write('fi\n')
             runner.write(f"tmux kill-session -t 'client{i+1}-proxy'\n")
             runner.write(f"tmux new-session -d -s 'client{i+1}-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:{PROXY_PORT_START+i} --forward 127.0.0.1:{SERVER_PORT} --ping {client[3]}ms --speed {client[4]} &> proxy{i+1}.txt'\n")
-            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --env TOTAL_CLIENTS={len(RESOURCES)} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 def generate_compose_file_direct():
     with open('runner.sh', 'w') as runner:
@@ -70,8 +70,7 @@ def generate_compose_file_direct():
         runner.write(f"\tsudo ufw allow {SERVER_PORT}/tcp\n")
         runner.write('fi\n')
         for i, client in enumerate(RESOURCES):
-            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
-
+            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --env TOTAL_CLIENTS={len(RESOURCES)} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 validate_resources()
-generate_compose_file()  # generate docker-compose file with num_clients clients
+generate_compose_file_direct()  # generate docker-compose file with num_clients clients
