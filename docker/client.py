@@ -14,32 +14,24 @@ from torchvision.datasets import MNIST
 from torchvision.transforms import Compose, Normalize, ToTensor
 from tqdm import tqdm
 
-# Hashmap to store metrics of this client.
-# Unix timestamp to (frequency, memory)
-metrics: dict[int, tuple[float, float]] = {}
+# An array to keep the metrics of each trained data.
+# Data stored is (freq, mem, time (seconds), dataset size)
+epoch_metrics = []
 
 class StatLoggerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.cput_util_sum = 0
+        self.memory_sum = 0
+        self.sampled = 0
+        self.done = False
+    
     def run(self):
-        while True:
-            current_time = int(time.time())
-            cpu_util = float(psutil.cpu_freq().current)
-            memory = float(psutil.Process(os.getpid()).memory_info().rss)
-            metrics[current_time] = (cpu_util, memory)
-            print("Logged", (cpu_util, memory), "at", current_time)
+        while not self.done:
+            self.sampled += 1
+            self.memory_sum += psutil.Process().memory_info().rss
+            self.cput_util_sum += float(os.environ['FREQUENCY'])
             time.sleep(1)
-
-# Get average of status of this client from 
-def average_time_of_stat(start: int, end: int) -> (float, float):
-    freq_sum = 0
-    mem_sum = 0
-    count = 0
-    for i in range(start, end+1):
-        if i in metrics:
-            count += 1
-            (freq, mem) = metrics[i]
-            freq_sum += freq
-            mem_sum += mem
-    return (freq_sum / count), (mem_sum / count)
 
 
 # #############################################################################
@@ -69,8 +61,16 @@ class Net(nn.Module):
         return layer3
 
 
-def train(net, trainloader, epochs):
+def train(net, trainloader, epochs) -> tuple[float, float, float, int]:
     """Train the model on the training set."""
+    # Increase a round counter
+    global round_counter
+    round_counter += 1
+    # Create watcher thread
+    stat_watcher = StatLoggerThread()
+    stat_watcher.start()
+    start_time = time.time()
+    # Do the learning
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for _ in range(epochs):
@@ -78,6 +78,12 @@ def train(net, trainloader, epochs):
             optimizer.zero_grad()
             criterion(net(images.to(DEVICE)), labels.to(DEVICE)).backward()
             optimizer.step()
+    # Join the watcher thread
+    end_time = time.time()
+    stat_watcher.done = True
+    stat_watcher.join()
+    # Collect data
+    return (stat_watcher.cput_util_sum / stat_watcher.sampled, stat_watcher.memory_sum / stat_watcher.sampled, end_time - start_time, len(trainloader.dataset))
 
 
 def test(net, testloader):
@@ -125,23 +131,22 @@ class FlowerClient(fl.client.NumPyClient):
         config = kwargs['config']
         print("props called with", config)
         result = {}
-        result["cpu"] = int(os.environ['CORES'])
-        result["ping"] = int(os.environ['PING'])
-        result["speed"] = int(os.environ['BANDWIDTH'])
-        if config["type"] == "total": # Device info
-            result["frequency"] = int(os.environ['FREQUENCY'])
-            result["memory"] = int(os.environ['MEMORY']) * 1024 * 1024
-        else: # Get average utilization
-            start = int(config["start"])
-            end = int(config["end"])
-            (freq, mem) = average_time_of_stat(start, end)
-            result["frequency"] = freq
-            result["memory"] = mem
+        result["last_round"] = len(epoch_metrics)
+        if len(epoch_metrics) != 0:
+            result["last_round_freq"] = epoch_metrics[-1][0]
+            result["last_round_mem"] = epoch_metrics[-1][1]
+            result["last_round_time"] = epoch_metrics[-1][2]
+            result["last_round_dataset_size"] = epoch_metrics[-1][3]
+        result["freq"] = float(os.environ['FREQUENCY'])
+        result["mem"] = int(os.environ['MEMORY']) * 1024 * 1024
+        result["cores"] = int(os.environ['CORES'])
+        result["dataset_size"] = len(trainloader.dataset) # TODO
         return result
 
     def fit(self, parameters, config):
         self.set_parameters(parameters)
-        train(net, trainloader, epochs=1)
+        train_metrics = train(net, trainloader, epochs=1)
+        epoch_metrics.append(train_metrics)
         return self.get_parameters(config={}), len(trainloader.dataset), {}
 
     def evaluate(self, parameters, config):
