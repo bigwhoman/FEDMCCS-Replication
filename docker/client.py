@@ -1,8 +1,9 @@
-from typing import Dict, Union
 import warnings
 from collections import OrderedDict
 import os
 import psutil
+import time
+import threading
 
 import flwr as fl
 import torch
@@ -12,6 +13,33 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import MNIST
 from torchvision.transforms import Compose, Normalize, ToTensor
 from tqdm import tqdm
+
+# Hashmap to store metrics of this client.
+# Unix timestamp to (frequency, memory)
+metrics: dict[int, tuple[float, float]] = {}
+
+class StatLoggerThread(threading.Thread):
+    def run(self):
+        while True:
+            current_time = int(time.time())
+            cpu_util = float(psutil.cpu_freq().current)
+            memory = float(psutil.Process(os.getpid()).memory_info().rss)
+            metrics[current_time] = (cpu_util, memory)
+            print("Logged", (cpu_util, memory), "at", current_time)
+            time.sleep(1)
+
+# Get average of status of this client from 
+def average_time_of_stat(start: int, end: int) -> (float, float):
+    freq_sum = 0
+    mem_sum = 0
+    count = 0
+    for i in range(start, end+1):
+        if i in metrics:
+            count += 1
+            (freq, mem) = metrics[i]
+            freq_sum += freq
+            mem_sum += mem
+    return (freq_sum / count), (mem_sum / count)
 
 
 # #############################################################################
@@ -94,12 +122,21 @@ class FlowerClient(fl.client.NumPyClient):
         net.load_state_dict(state_dict, strict=True)
 
     def get_properties(*args, **kwargs):
+        config = kwargs['config']
+        print("props called with", config)
         result = {}
-        result["cpu"] = int(os.environ['CORES'])
-        result["frequency"] = int(os.environ['FREQUENCY'])
-        result["memory"] = int(os.environ['MEMORY']) * 1024 * 1024
-        result["ping"] = int(os.environ['PING'])
-        result["speed"] = int(os.environ['BANDWIDTH'])
+        if config["type"] == "total": # Device info
+            result["cpu"] = int(os.environ['CORES'])
+            result["frequency"] = int(os.environ['FREQUENCY'])
+            result["memory"] = int(os.environ['MEMORY']) * 1024 * 1024
+            result["ping"] = int(os.environ['PING'])
+            result["speed"] = int(os.environ['BANDWIDTH'])
+        else: # Get average utilization
+            start = int(config["start"])
+            end = int(config["end"])
+            (freq, mem) = average_time_of_stat(start, end)
+            result["frequency"] = freq
+            result["memory"] = mem
         return result
 
     def fit(self, parameters, config):
@@ -112,6 +149,8 @@ class FlowerClient(fl.client.NumPyClient):
         loss, accuracy = test(net, testloader)
         return loss, len(testloader.dataset), {"accuracy": accuracy}
 
+# Start utilization thread
+StatLoggerThread().start()
 
 # Start Flower client
 fl.client.start_numpy_client(
