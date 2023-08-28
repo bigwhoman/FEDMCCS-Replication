@@ -52,7 +52,7 @@ def generate_compose_file():
     with open('runner.sh', 'w') as runner:
         runner.write("#!/bin/bash\n")
         runner.write("docker build --tag 'fed-client' .\n")
-        runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")  
+        runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
         for i, client in enumerate(RESOURCES):
             runner.write('if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then\n')
             runner.write(f"\tsudo ufw allow {PROXY_PORT_START+i}/tcp\n")
@@ -60,6 +60,18 @@ def generate_compose_file():
             runner.write(f"tmux kill-session -t 'client{i+1}-proxy'\n")
             runner.write(f"tmux new-session -d -s 'client{i+1}-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:{PROXY_PORT_START+i} --forward 127.0.0.1:{SERVER_PORT} --ping {client[3]}ms --speed {client[4]} &> proxy{i+1}.txt'\n")
             runner.write(f"docker run -d --name 'client{i+1}' --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+
+def generate_compose_file_direct():
+    with open('runner.sh', 'w') as runner:
+        runner.write("#!/bin/bash\n")
+        runner.write("docker build --tag 'fed-client' .\n")
+        runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
+        runner.write('if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then\n')
+        runner.write(f"\tsudo ufw allow {SERVER_PORT+i}/tcp\n")
+        runner.write('fi\n')
+        for i, client in enumerate(RESOURCES):
+            runner.write(f"docker run -d --name 'client{i+1}' --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+
 
 validate_resources()
 generate_compose_file()  # generate docker-compose file with num_clients clients
