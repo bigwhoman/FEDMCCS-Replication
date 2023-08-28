@@ -24,13 +24,19 @@ strategy = fl.server.strategy.FedAvg(evaluate_metrics_aggregation_fn=weighted_av
 
 
 class myClientManager(fl.server.SimpleClientManager):
+    round_number = 0
+    client_configs = {}
+    def linear_regression():
+        pass
+
     def sample(
         self,
         num_clients: int,
         min_num_clients: Optional[int] = None,
         criterion: Optional[Criterion] = None,
     ) -> List[ClientProxy]:
-        print("penis")
+        self.round_number += 1
+        print(" round number ---------------------> ",self.round_number)
         # Block until at least num_clients are connected.
         if min_num_clients is None:
             min_num_clients = num_clients
@@ -49,11 +55,22 @@ class myClientManager(fl.server.SimpleClientManager):
                 len(available_cids),
                 num_clients,
             )
-            return []
-        for client in available_cids:
-            config = GetPropertiesIns({})
-            print(self.clients[client].get_properties(config, None))
-        sampled_cids = random.sample(available_cids, num_clients)
+            return [] 
+        
+
+        for cid in available_cids:
+            if cid not in self.client_configs : 
+                self.client_configs[cid] = []
+            config = GetPropertiesIns({"resource": "total/old"})
+            (self.client_configs[cid]).append(self.clients[cid].get_properties(config, None).properties)
+            print(self.clients[cid].get_properties(config, None).properties)
+        if self.round_number <= 4 : 
+            print(" selection -----------------> random...")
+            sampled_cids = random.sample(available_cids, num_clients)
+        else :
+            print(" selection -----------------> learning...")
+            sampled_cids = self.linear_regression()
+        print(num_clients)
         return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
 fl.server.start_server(
