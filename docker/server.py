@@ -1,4 +1,6 @@
 from typing import List, Tuple
+import numpy as np
+from sklearn.linear_model import LinearRegression
 import random
 import flwr as fl
 from flwr.common import Metrics
@@ -26,7 +28,22 @@ strategy = fl.server.strategy.FedAvg(evaluate_metrics_aggregation_fn=weighted_av
 class myClientManager(fl.server.SimpleClientManager):
     round_number = 0
     client_configs = {}
-    def linear_regression():
+
+
+    def predict_utilization(client):  
+        historical_data = client
+        Util = {}
+        for parameter in ["frequency","memory","time","cpu"] :
+            model = LinearRegression()
+            model.fit(historical_data["last_stat"]["size"], historical_data["last_stat"][parameter])
+            y_pred = model.predict(client["current_dataset_size"])
+            Util[parameter] = y_pred
+        return Util
+
+
+
+
+    def linear_regression(available_cids):
         pass
 
     def sample(
@@ -58,18 +75,23 @@ class myClientManager(fl.server.SimpleClientManager):
             return [] 
         
 
+        keylist = ["frequency","memory","time","cpu","size"]
+
         for cid in available_cids:
             if cid not in self.client_configs : 
-                self.client_configs[cid] = []
+                self.client_configs[cid]["historical_data"] = {key:[] for key in keylist}
+                self.client_configs[cid]["current_dataset_size"] = 0
             config = GetPropertiesIns({"resource": "total/old"})
-            (self.client_configs[cid]).append(self.clients[cid].get_properties(config, None).properties)
-            print(self.clients[cid].get_properties(config, None).properties)
+            serv_conf = self.clients[cid].get_properties(config, None).properties
+            for key in keylist :
+                self.client_configs[cid]["historical_data"][key].append(serv_conf[key])
+            self.client_configs[cid]["current_dataset_size"] = serv_conf["current_dataset_size"]
         if self.round_number <= 4 : 
             print(" selection -----------------> random...")
             sampled_cids = random.sample(available_cids, num_clients)
         else :
             print(" selection -----------------> learning...")
-            sampled_cids = self.linear_regression()
+            sampled_cids = self.linear_regression(available_cids)
         print(num_clients)
         return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
