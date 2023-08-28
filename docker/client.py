@@ -11,16 +11,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.data
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Subset
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
 from tqdm import tqdm
-
-# Dynamic dataset
-MAX_DATASET_SIZE = 60000 # MNIST data
-ADDITION_RATE = 2000
-current_dataset_size = MAX_DATASET_SIZE / int(os.environ['TOTAL_CLIENTS']) * random.uniform(0.9, 1.1)
-print("Selected", current_dataset_size, "as dataset size")
 
 # An array to keep the metrics of each trained data.
 # Data stored is (freq, mem, time (seconds), dataset size)
@@ -108,19 +102,26 @@ def test(net, testloader):
     return loss, accuracy
 
 
-def load_dataset(size: int):
-    """Load MNIST training set with specified size"""
-    # https://stackoverflow.com/a/55760170
-    trainset = MNIST("./data", train=True, download=False, transform=ToTensor())
-    trainset = torch.utils.data.random_split(trainset, [size, len(trainset)-size])[0]
-    return DataLoader(trainset, batch_size=32, shuffle=True)
-
-
 # #############################################################################
 # 2. Federation of the pipeline with Flower
 # #############################################################################
 
-# Load model and data (simple CNN, CIFAR-10)
+# Dynamic dataset
+SEED = int(os.environ['SEED'])
+NUM_CLIENTS = int(os.environ['TOTAL_CLIENTS'])
+CLIENT_ID = int(os.environ['CLIENT_ID'])
+assert CLIENT_ID < NUM_CLIENTS
+def load_dedicated_dataset():
+    # From https://github.com/adap/flower/commit/22c5d69c05d09fa0952a7fdd7d56bbab79dd8e59#diff-03eb371d0637fcf8311fb394b2d2bd9e9f749b5ddcb442f29f42a8bb99699f8eR103
+    dataset = MNIST("./data", train=True, download=True, transform=ToTensor())
+    num_images = len(dataset) // NUM_CLIENTS
+    partition_len = [num_images] * NUM_CLIENTS
+    return torch.utils.data.random_split(dataset, partition_len, torch.Generator().manual_seed(SEED))[CLIENT_ID]
+MASTER_DATASET = load_dedicated_dataset()
+ADDITION_RATE = len(MASTER_DATASET) // 10
+current_dataset_size = len(MASTER_DATASET) // 2
+
+# Load model
 net = Net().to(DEVICE)
 TEST_LOADER = DataLoader(MNIST("./data", train=False, download=True, transform=ToTensor()))
 
@@ -154,13 +155,13 @@ class FlowerClient(fl.client.NumPyClient):
         global current_dataset_size
         self.set_parameters(parameters)
         # Load the dataset of desired size
-        dataset_loader = load_dataset(current_dataset_size)
+        dataset_loader = Subset(MASTER_DATASET, list(range(current_dataset_size)))
         train_metrics = train(net, dataset_loader, epochs=1)
         # Save metrics
         epoch_metrics.append(train_metrics)
         print("Train", len(epoch_metrics), "done with params", epoch_metrics)
         # Change the dataset size and resample
-        current_dataset_size = min(MAX_DATASET_SIZE, current_dataset_size + ADDITION_RATE * (random.random() / 0.5 + 0.9))
+        current_dataset_size = min(len(MASTER_DATASET), current_dataset_size + ADDITION_RATE * random.uniform(0.7, 1.3))
         print("Selected", current_dataset_size, "as dataset size")
         return self.get_parameters(config={}), len(dataset_loader.dataset), {}
 
