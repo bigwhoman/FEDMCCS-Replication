@@ -68,7 +68,7 @@ def test(net, testloader):
 
 def load_data():
     """Load CIFAR-10 (training and test set)."""
-    trf = Compose([ToTensor(), Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    trf = ToTensor()
     trainset = MNIST("./data", train=True, download=True, transform=trf)
     testset = MNIST("./data", train=False, download=True, transform=trf)
     return DataLoader(trainset, batch_size=32, shuffle=True), DataLoader(testset)
@@ -93,11 +93,13 @@ class FlowerClient(fl.client.NumPyClient):
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         net.load_state_dict(state_dict, strict=True)
 
-    def get_properties(config: Dict[str, Union[bool, bytes, float, int, str]]) -> Dict[str, Union[bool, bytes, float, int, str]]:
-        result: Dict[str, Union[bool, bytes, float, int, str]] = {}
-        result["cpu"] = os.cpu_count()
-        result["frequency"] = psutil.cpu_freq().max * float(os.environ['FREQUENCY'])
-        result["memory"] = psutil.virtual_memory().total
+    def get_properties(*args, **kwargs):
+        result = {}
+        result["cpu"] = int(os.environ['CORES'])
+        result["frequency"] = int(os.environ['FREQUENCY'])
+        result["memory"] = int(os.environ['MEMORY']) * 1024 * 1024
+        result["ping"] = int(os.environ['PING'])
+        result["speed"] = int(os.environ['BANDWIDTH'])
         return result
 
     def fit(self, parameters, config):
