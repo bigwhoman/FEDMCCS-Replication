@@ -5,3 +5,4 @@ multirun/
 __pycache__
 docker/data
 docker/proxy*
+docker/runner.sh
