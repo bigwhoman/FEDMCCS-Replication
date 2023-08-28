@@ -32,7 +32,7 @@ def validate_resources():
     if total_memory < declared_memory:
         print(f"You have declared {declared_memory} memory usage but you only have {total_memory}")
         exit(1)
-    
+
 def get_cpu_ids(needed: int) -> str:
     global current_cpu_counter
     result = ",".join(map(lambda i: str(i), range(current_cpu_counter, current_cpu_counter + needed)))
@@ -67,7 +67,7 @@ def generate_compose_file_direct():
         runner.write("docker build --tag 'fed-client' .\n")
         runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
         runner.write('if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then\n')
-        runner.write(f"\tsudo ufw allow {SERVER_PORT+i}/tcp\n")
+        runner.write(f"\tsudo ufw allow {SERVER_PORT}/tcp\n")
         runner.write('fi\n')
         for i, client in enumerate(RESOURCES):
             runner.write(f"docker run -d --name 'client{i+1}' --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")

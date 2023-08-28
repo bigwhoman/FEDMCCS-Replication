@@ -4,15 +4,23 @@ import os
 import psutil
 import time
 import threading
+import random
 
 import flwr as fl
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.data
 from torch.utils.data import DataLoader
 from torchvision.datasets import MNIST
-from torchvision.transforms import Compose, Normalize, ToTensor
+from torchvision.transforms import ToTensor
 from tqdm import tqdm
+
+# Dynamic dataset
+MAX_DATASET_SIZE = 60000 # MNIST data
+ADDITION_RATE = 2000
+current_dataset_size = MAX_DATASET_SIZE * (random.random() / 3 + 0.3)
+print("Selected", current_dataset_size, "as dataset size")
 
 # An array to keep the metrics of each trained data.
 # Data stored is (freq, mem, time (seconds), dataset size)
@@ -100,12 +108,12 @@ def test(net, testloader):
     return loss, accuracy
 
 
-def load_data():
-    """Load CIFAR-10 (training and test set)."""
-    trf = ToTensor()
-    trainset = MNIST("./data", train=True, download=True, transform=trf)
-    testset = MNIST("./data", train=False, download=True, transform=trf)
-    return DataLoader(trainset, batch_size=32, shuffle=True), DataLoader(testset)
+def load_dataset(size: int):
+    """Load MNIST training set with specified size"""
+    # https://stackoverflow.com/a/55760170
+    trainset = MNIST("./data", train=True, download=False, transform=ToTensor())
+    trainset = torch.utils.data.random_split(trainset, [size, len(trainset)-size])[0]
+    return DataLoader(trainset, batch_size=32, shuffle=True)
 
 
 # #############################################################################
@@ -114,8 +122,7 @@ def load_data():
 
 # Load model and data (simple CNN, CIFAR-10)
 net = Net().to(DEVICE)
-trainloader, testloader = load_data()
-
+TEST_LOADER = DataLoader(MNIST("./data", train=False, download=True, transform=ToTensor()))
 
 # Define Flower client
 class FlowerClient(fl.client.NumPyClient):
@@ -140,22 +147,27 @@ class FlowerClient(fl.client.NumPyClient):
         result["freq"] = float(os.environ['FREQUENCY'])
         result["mem"] = int(os.environ['MEMORY']) * 1024 * 1024
         result["cores"] = int(os.environ['CORES'])
-        result["dataset_size"] = len(trainloader.dataset) # TODO
+        result["dataset_size"] = current_dataset_size
         return result
 
     def fit(self, parameters, config):
+        global current_dataset_size
         self.set_parameters(parameters)
-        train_metrics = train(net, trainloader, epochs=1)
+        # Load the dataset of desired size
+        dataset_loader = load_dataset(current_dataset_size)
+        train_metrics = train(net, dataset_loader, epochs=1)
+        # Save metrics
         epoch_metrics.append(train_metrics)
-        return self.get_parameters(config={}), len(trainloader.dataset), {}
+        print("Train", len(epoch_metrics), "done with params", epoch_metrics)
+        # Change the dataset size and resample
+        current_dataset_size = min(MAX_DATASET_SIZE, current_dataset_size + ADDITION_RATE * (random.random() / 0.5 + 0.9))
+        print("Selected", current_dataset_size, "as dataset size")
+        return self.get_parameters(config={}), len(dataset_loader.dataset), {}
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy = test(net, testloader)
-        return loss, len(testloader.dataset), {"accuracy": accuracy}
-
-# Start utilization thread
-StatLoggerThread().start()
+        loss, accuracy = test(net, TEST_LOADER)
+        return loss, len(TEST_LOADER.dataset), {"accuracy": accuracy}
 
 # Start Flower client
 fl.client.start_numpy_client(
