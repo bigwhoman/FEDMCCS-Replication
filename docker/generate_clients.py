@@ -6,10 +6,10 @@ RESOURCES = [
     # -> (cpu cores, cpu core util in range of (0, 1], memory limit in MB,
     #     ping latency, bandwidth)
     # Use zero for ping and bandwidth to set them to unlimited
-    (1, 0.5, 100, 100, 0),
+    (1, 1, 100, 100, 1024 * 512),
      (1, 1, 200, 0, 1024 * 1024),
-    (2, 0.75, 500, 0, 0),
-    (1, 0.25, 50, 50, 1024 * 512)
+    (2, 0.75, 500, 0, 1024 * 1024),
+    (1, 0.25, 120, 50, 1024 * 512)
 ]
 PROXY_PORT_START = 8088
 SERVER_PORT = 8080

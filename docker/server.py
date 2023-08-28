@@ -28,23 +28,51 @@ strategy = fl.server.strategy.FedAvg(evaluate_metrics_aggregation_fn=weighted_av
 class myClientManager(fl.server.SimpleClientManager):
     round_number = 0
     client_configs = {}
+    
+    ### TODO
+    RANDOM_ROUNDS = 2
+    CPU_BUDGET = 1 
+    MEM_BUDGET = 0.7 
+    ENERGY_BUDGET = 1
+    TIME_THRESHOLD = 50
+    CLIENT_FRACTION = 0.8
+    ###
 
-
-    def predict_utilization(client):  
-        historical_data = client
+    def predict_utilization(
+                            self, 
+                            client):  # client = client_configs[cid]
+        historical_data = client["historical_data"]
         Util = {}
-        for parameter in ["frequency","memory","time","cpu"] :
+        for parameter in ["last_round_freq","last_round_mem","last_round_time","cores"] :
             model = LinearRegression()
-            model.fit(historical_data["last_stat"]["size"], historical_data["last_stat"][parameter])
-            y_pred = model.predict(client["current_dataset_size"])
+            model.fit(historical_data["last_round_dataset_size"], historical_data[parameter])
+            y_pred = model.predict(client["dataset_size"])
             Util[parameter] = y_pred
         return Util
 
 
+    def sufficientResources(self, client) :
+        Util = self.predict_utilization(client)
+        return (Util['cores'] <= self.CPU_BUDGET * client['cores'] and
+                Util['last_round_mem'] <= self.MEM_BUDGET * client['mem'] and  
+                Util['last_round_freq'] <= self.ENERGY_BUDGET * client['freq'] and
+                Util['last_round_time'] <= self.TIME_THRESHOLD)  
 
+    def linear_regression(
+                            self, 
+                            available_cids,
+                            num_clients, 
+                            target_fraction):
+        selected_clients = []
 
-    def linear_regression(available_cids):
-        pass
+        # while available_cids and len(selected_clients) < target_fraction * num_clients:
+        for cid in random.sample(available_cids,len(available_cids)) : 
+            if len(selected_clients) >= target_fraction * num_clients :
+                break
+            if self.sufficientResources(self.client_configs[cid]) :
+                selected_clients.append(cid)
+        print("selected clients -------------> ",selected_clients)
+        return selected_clients
 
     def sample(
         self,
@@ -75,29 +103,39 @@ class myClientManager(fl.server.SimpleClientManager):
             return [] 
         
 
-        keylist = ["frequency","memory","time","cpu","size"]
+        keylist = ["last_round_freq","last_round_mem","last_round_time","cores","last_round_dataset_size"]
 
         for cid in available_cids:
-            if cid not in self.client_configs : 
-                self.client_configs[cid]["historical_data"] = {key:[] for key in keylist}
-                self.client_configs[cid]["current_dataset_size"] = 0
+            
             config = GetPropertiesIns({"resource": "total/old"})
             serv_conf = self.clients[cid].get_properties(config, None).properties
+
+            if cid not in self.client_configs : 
+                self.client_configs[cid]["historical_data"] = {key:[] for key in keylist}
+                self.client_configs[cid]["mem"] = serv_conf["mem"]
+                self.client_configs[cid]["freq"] = serv_conf["freq"]
+                self.client_configs[cid]["cores"] = serv_conf["cores"]
+                self.client_configs[cid]["dataset_size"] = 0            
+
             for key in keylist :
                 self.client_configs[cid]["historical_data"][key].append(serv_conf[key])
-            self.client_configs[cid]["current_dataset_size"] = serv_conf["current_dataset_size"]
-        if self.round_number <= 4 : 
+
+            self.client_configs[cid]["dataset_size"] = serv_conf["dataset_size"]
+
+
+        if self.round_number <= self.RANDOM_ROUNDS : 
             print(" selection -----------------> random...")
             sampled_cids = random.sample(available_cids, num_clients)
+
         else :
             print(" selection -----------------> learning...")
-            sampled_cids = self.linear_regression(available_cids)
-        print(num_clients)
+            sampled_cids = self.linear_regression(available_cids,num_clients, self.CLIENT_FRACTION)
+        print("sampled cids ----------------> ", sampled_cids)
         return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
 fl.server.start_server(
     server_address="0.0.0.0:8080",
-    config=fl.server.ServerConfig(num_rounds=1),
+    config=fl.server.ServerConfig(num_rounds=5,round_timeout=myClientManager.TIME_THRESHOLD),
     client_manager=myClientManager(),
     strategy=strategy,
 )
