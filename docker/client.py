@@ -125,12 +125,12 @@ class FlowerClient(fl.client.NumPyClient):
         config = kwargs['config']
         print("props called with", config)
         result = {}
+        result["cpu"] = int(os.environ['CORES'])
+        result["ping"] = int(os.environ['PING'])
+        result["speed"] = int(os.environ['BANDWIDTH'])
         if config["type"] == "total": # Device info
-            result["cpu"] = int(os.environ['CORES'])
             result["frequency"] = int(os.environ['FREQUENCY'])
             result["memory"] = int(os.environ['MEMORY']) * 1024 * 1024
-            result["ping"] = int(os.environ['PING'])
-            result["speed"] = int(os.environ['BANDWIDTH'])
         else: # Get average utilization
             start = int(config["start"])
             end = int(config["end"])
