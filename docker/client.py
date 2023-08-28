@@ -19,7 +19,7 @@ from tqdm import tqdm
 # Dynamic dataset
 MAX_DATASET_SIZE = 60000 # MNIST data
 ADDITION_RATE = 2000
-current_dataset_size = MAX_DATASET_SIZE * (random.random() / 3 + 0.3)
+current_dataset_size = MAX_DATASET_SIZE / int(os.environ['TOTAL_CLIENTS']) * random.uniform(0.9, 1.1)
 print("Selected", current_dataset_size, "as dataset size")
 
 # An array to keep the metrics of each trained data.
