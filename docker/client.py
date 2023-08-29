@@ -65,9 +65,6 @@ class Net(nn.Module):
 
 def train(net, trainloader, epochs):
     """Train the model on the training set."""
-    # Increase a round counter
-    global round_counter
-    round_counter += 1
     # Create watcher thread
     stat_watcher = StatLoggerThread()
     stat_watcher.start()
