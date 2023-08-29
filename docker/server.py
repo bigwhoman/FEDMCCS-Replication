@@ -125,10 +125,11 @@ class myClientManager(fl.server.SimpleClientManager):
                 self.client_configs[cid]["historical_data"] = {key:[] for key in keylist}
                 self.client_configs[cid]["mem"] = serv_conf["mem"]
                 self.client_configs[cid]["freq"] = serv_conf["freq"]
+                self.client_configs[cid]["cores"] = serv_conf["cores"]
                 self.client_configs[cid]["dataset_size"] = 0        
 
             for key in keylist :
-                    if key in serv_conf:
+                    if key in serv_conf and key != "cores":
                         self.client_configs[cid]["historical_data"][key].append(serv_conf[key])
 
             self.client_configs[cid]["dataset_size"] = serv_conf["dataset_size"]
