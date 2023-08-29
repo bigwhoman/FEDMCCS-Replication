@@ -52,7 +52,7 @@ class myClientManager(fl.server.SimpleClientManager):
             print("last data set _--------------> ", historical_data["last_round_dataset_size"])
             print("parammmmmmmmmmmmm ------------> ", historical_data[parameter])
 
-            model.fit(x, y) -a
+            model.fit(x, y) 
             y_pred = model.predict(client["dataset_size"])
             Util[parameter] = y_pred
         return Util
