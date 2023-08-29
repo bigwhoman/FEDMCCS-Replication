@@ -46,9 +46,13 @@ class myClientManager(fl.server.SimpleClientManager):
         Util = {}
         for parameter in ["last_round_freq","last_round_mem","last_round_time","cores"] :
             model = LinearRegression()
+            x = np.array(historical_data["last_round_dataset_size"]).reshape((-1, 1))
+            y = np.array(historical_data[parameter])
+
             print("last data set _--------------> ", historical_data["last_round_dataset_size"])
             print("parammmmmmmmmmmmm ------------> ", historical_data[parameter])
-            model.fit(historical_data["last_round_dataset_size"], historical_data[parameter])
+
+            model.fit(x, y) -a
             y_pred = model.predict(client["dataset_size"])
             Util[parameter] = y_pred
         return Util
@@ -91,6 +95,7 @@ class myClientManager(fl.server.SimpleClientManager):
         if min_num_clients is None:
             min_num_clients = num_clients
         self.wait_for(min_num_clients)
+        print("cum")
         # Sample clients which meet the criterion
         available_cids = list(self.clients)
         if criterion is not None:
