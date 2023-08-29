@@ -64,6 +64,14 @@ class myClientManager(fl.server.SimpleClientManager):
     def sufficientResources(self, client) :
         Util = self.predict_utilization(client)
         # print(f"The util : {client}  ------------> ",Util)
+        if Util['last_round_cores'] > self.CPU_BUDGET * client['cores'] : 
+            print("no cores ---------> ",Util['last_round_cores'], self.CPU_BUDGET * client['cores'])
+        if Util['last_round_freq'] > self.ENERGY_BUDGET * client['freq'] : 
+            print("no freq ---------> ",Util['last_round_freq'], self.ENERGY_BUDGET * client['freq'])
+        if Util['last_round_mem'] > self.MEM_BUDGET * client['mem'] : 
+            print("no mem ---------> ",Util['last_round_mem'], self.MEM_BUDGET * client['mem'])
+        if Util['last_round_time'] > self.TIME_THRESHOLD : 
+            print("no time ---------> ",Util['last_round_time'], self.TIME_THRESHOLD)
         return (Util['last_round_cores'] <= self.CPU_BUDGET * client['cores'] and
                 Util['last_round_mem'] <= self.MEM_BUDGET * client['mem'] and  
                 Util['last_round_freq'] <= self.ENERGY_BUDGET * client['freq'] and
@@ -147,6 +155,8 @@ class myClientManager(fl.server.SimpleClientManager):
         else :
             print(" selection -----------------> learning...")
             sampled_cids = self.linear_regression(available_cids,num_clients, self.CLIENT_FRACTION)
+        if len(sampled_cids) == 0 :
+             sampled_cids = random.sample(available_cids, int(num_clients*self.CLIENT_FRACTION))
         print("sampled cids ----------------> ", sampled_cids)
         return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
