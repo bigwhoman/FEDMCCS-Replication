@@ -49,8 +49,8 @@ class myClientManager(fl.server.SimpleClientManager):
             x = np.array(historical_data["last_round_dataset_size"]).reshape((-1, 1))
             y = np.array(historical_data[parameter])
 
-            print("last data set _--------------> ", historical_data["last_round_dataset_size"])
-            print("parammmmmmmmmmmmm ------------> ", historical_data[parameter])
+            print("last data set --------------> ", historical_data["last_round_dataset_size"])
+            print(f"parammmmmmmmmmmmm {parameter} ------------> ", historical_data[parameter])
 
             model.fit(x, y) 
             y_pred = model.predict(np.array([client["dataset_size"]]).reshape((-1, 1)))
@@ -125,7 +125,6 @@ class myClientManager(fl.server.SimpleClientManager):
                 self.client_configs[cid]["historical_data"] = {key:[] for key in keylist}
                 self.client_configs[cid]["mem"] = serv_conf["mem"]
                 self.client_configs[cid]["freq"] = serv_conf["freq"]
-                self.client_configs[cid]["cores"] = serv_conf["cores"]
                 self.client_configs[cid]["dataset_size"] = 0        
 
             for key in keylist :
