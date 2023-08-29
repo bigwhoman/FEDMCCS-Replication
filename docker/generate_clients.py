@@ -6,10 +6,10 @@ RESOURCES = [
     # -> (cpu cores, cpu core util in range of (0, 1], memory limit in MB,
     #     ping latency, bandwidth)
     # Use zero for ping and bandwidth to set them to unlimited
-    (1, 1, 100, 100, 1024 * 512),
+    (1, 1, 150, 100, 1024 * 512),
      (1, 1, 200, 0, 1024 * 1024),
     (2, 0.75, 500, 0, 1024 * 1024),
-    (1, 0.25, 120, 50, 1024 * 512)
+    (1, 0.25, 150, 50, 1024 * 512)
 ]
 PROXY_PORT_START = 8088
 SERVER_PORT = 8080
@@ -70,9 +70,9 @@ def generate_compose_file_direct():
         runner.write(f"docker rm client{{1..{len(RESOURCES)}}}\n")
         runner.write('if ! [[ "$(sudo ufw status)" =~ "inactive" ]]; then\n')
         runner.write(f"\tsudo ufw allow {SERVER_PORT}/tcp\n")
+        runner.write('fi\n')
         runner.write("SEED=$RANDOM\n")
         runner.write("echo Chose $SEED as the seed\n")
-        runner.write('fi\n')
         for i, client in enumerate(RESOURCES):
             runner.write(f"docker run -d --name 'client{i+1}' --env CLIENT_ID={i+1} --env TOTAL_CLIENTS={len(RESOURCES)} --env SEED=$SEED --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
