@@ -141,6 +141,7 @@ class FlowerClient(fl.client.NumPyClient):
             result["last_round_freq"] = epoch_metrics[-1][0]
             result["last_round_mem"] = epoch_metrics[-1][1]
             result["last_round_time"] = epoch_metrics[-1][2]
+            result["last_round_cores"] = int(os.environ['CORES'])
             result["last_round_dataset_size"] = epoch_metrics[-1][3]
         result["freq"] = float(os.environ['FREQUENCY'])
         result["mem"] = int(os.environ['MEMORY']) * 1024 * 1024
@@ -158,7 +159,7 @@ class FlowerClient(fl.client.NumPyClient):
         epoch_metrics.append(train_metrics)
         print("Train", len(epoch_metrics), "done with params", epoch_metrics)
         # Change the dataset size and resample
-        current_dataset_size = min(len(MASTER_DATASET), current_dataset_size + ADDITION_RATE * random.uniform(0.7, 1.3))
+        current_dataset_size = min(len(MASTER_DATASET), current_dataset_size + int(ADDITION_RATE * random.uniform(0.7, 1.3)))
         print("Selected", current_dataset_size, "as dataset size")
         return self.get_parameters(config={}), len(dataset_loader.dataset), {}
 
@@ -172,3 +173,4 @@ fl.client.start_numpy_client(
     server_address="host.docker.internal:" + os.environ['PORT'],
     client=FlowerClient(),
 )
+
