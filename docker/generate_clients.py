@@ -6,6 +6,8 @@ RESOURCES = [
     # -> (cpu cores, cpu core util in range of (0, 1], memory limit in MB,
     #     ping latency, bandwidth)
     # Use zero for ping and bandwidth to set them to unlimited
+    (1, 1, 250, 100, 1024 * 512),
+    (1, 1, 150, 100, 1024 * 512),
     (1, 1, 150, 100, 1024 * 512),
      (1, 1, 200, 0, 1024 * 1024),
     (2, 0.75, 500, 0, 1024 * 1024),
@@ -61,7 +63,7 @@ def generate_compose_file():
             runner.write('fi\n')
             runner.write(f"tmux kill-session -t 'client{i+1}-proxy'\n")
             runner.write(f"tmux new-session -d -s 'client{i+1}-proxy' '../proxy-meter/proxy-meter --listen 0.0.0.0:{PROXY_PORT_START+i} --forward 127.0.0.1:{SERVER_PORT} --ping {client[3]}ms --speed {client[4]} &> proxy{i+1}.txt'\n")
-            runner.write(f"docker run -d --name 'client{i+1}' --env CLIENT_ID={i+1} --env TOTAL_CLIENTS={len(RESOURCES)} --env SEED=$SEED --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+            runner.write(f"docker run -d --name 'client{i+1}' --env CLIENT_ID={i} --env TOTAL_CLIENTS={len(RESOURCES)} --env SEED=$SEED --env PORT={PROXY_PORT_START+i} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 def generate_compose_file_direct():
     with open('runner.sh', 'w') as runner:
@@ -74,7 +76,7 @@ def generate_compose_file_direct():
         runner.write("SEED=$RANDOM\n")
         runner.write("echo Chose $SEED as the seed\n")
         for i, client in enumerate(RESOURCES):
-            runner.write(f"docker run -d --name 'client{i+1}' --env CLIENT_ID={i+1} --env TOTAL_CLIENTS={len(RESOURCES)} --env SEED=$SEED --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
+            runner.write(f"docker run -d --name 'client{i+1}' --env CLIENT_ID={i} --env TOTAL_CLIENTS={len(RESOURCES)} --env SEED=$SEED --env PORT={SERVER_PORT} --env CORES={client[0]} --env FREQUENCY={int(cpu_frequency() * client[1])} --env MEMORY={client[2]} --env PING={client[3]} --env BANDWIDTH={client[4]} --add-host=host.docker.internal:host-gateway {generate_resources(client[0], client[1], client[2])} fed-client\n")
 
 
 validate_resources()

@@ -35,16 +35,19 @@ class myClientManager(fl.server.SimpleClientManager):
     MEM_BUDGET = 0.7 
     ENERGY_BUDGET = 1
     TIME_THRESHOLD = 50
-    CLIENT_FRACTION = 0.8
+    CLIENT_FRACTION = 0.3
     ###
 
     def predict_utilization(
                             self, 
                             client):  # client = client_configs[cid]
         historical_data = client["historical_data"]
+        print("predicttttttttttttt------------------------------------------------")
         Util = {}
         for parameter in ["last_round_freq","last_round_mem","last_round_time","cores"] :
             model = LinearRegression()
+            print("last data set _--------------> ", historical_data["last_round_dataset_size"])
+            print("parammmmmmmmmmmmm ------------> ", historical_data[parameter])
             model.fit(historical_data["last_round_dataset_size"], historical_data[parameter])
             y_pred = model.predict(client["dataset_size"])
             Util[parameter] = y_pred
@@ -53,6 +56,7 @@ class myClientManager(fl.server.SimpleClientManager):
 
     def sufficientResources(self, client) :
         Util = self.predict_utilization(client)
+        print(f"The util : {client}  ------------> ",Util)
         return (Util['cores'] <= self.CPU_BUDGET * client['cores'] and
                 Util['last_round_mem'] <= self.MEM_BUDGET * client['mem'] and  
                 Util['last_round_freq'] <= self.ENERGY_BUDGET * client['freq'] and
@@ -66,6 +70,7 @@ class myClientManager(fl.server.SimpleClientManager):
         selected_clients = []
 
         # while available_cids and len(selected_clients) < target_fraction * num_clients:
+        print("available cids -----------------> ", random.sample(available_cids,len(available_cids)))
         for cid in random.sample(available_cids,len(available_cids)) : 
             if len(selected_clients) >= target_fraction * num_clients :
                 break
@@ -106,23 +111,25 @@ class myClientManager(fl.server.SimpleClientManager):
         keylist = ["last_round_freq","last_round_mem","last_round_time","cores","last_round_dataset_size"]
 
         for cid in available_cids:
-            
+            print(f"my niggaaaaaaaaaaaaaa {cid}")
             config = GetPropertiesIns({"resource": "total/old"})
             serv_conf = self.clients[cid].get_properties(config, None).properties
 
             if cid not in self.client_configs : 
+                self.client_configs[cid] = {}
                 self.client_configs[cid]["historical_data"] = {key:[] for key in keylist}
                 self.client_configs[cid]["mem"] = serv_conf["mem"]
                 self.client_configs[cid]["freq"] = serv_conf["freq"]
                 self.client_configs[cid]["cores"] = serv_conf["cores"]
-                self.client_configs[cid]["dataset_size"] = 0            
+                self.client_configs[cid]["dataset_size"] = 0        
 
             for key in keylist :
-                self.client_configs[cid]["historical_data"][key].append(serv_conf[key])
+                    if key in serv_conf:
+                        self.client_configs[cid]["historical_data"][key].append(serv_conf[key])
 
             self.client_configs[cid]["dataset_size"] = serv_conf["dataset_size"]
 
-
+        print("chooooooooooooooookiiiiiiii --------------------------------------")
         if self.round_number <= self.RANDOM_ROUNDS : 
             print(" selection -----------------> random...")
             sampled_cids = random.sample(available_cids, num_clients)
