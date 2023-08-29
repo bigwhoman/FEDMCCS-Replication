@@ -152,7 +152,7 @@ class FlowerClient(fl.client.NumPyClient):
         global current_dataset_size
         self.set_parameters(parameters)
         # Load the dataset of desired size
-        dataset_loader = Subset(MASTER_DATASET, list(range(current_dataset_size)))
+        dataset_loader = DataLoader(Subset(MASTER_DATASET, list(range(current_dataset_size))), shuffle=True, batch_size=32)
         train_metrics = train(net, dataset_loader, epochs=1)
         # Save metrics
         epoch_metrics.append(train_metrics)
