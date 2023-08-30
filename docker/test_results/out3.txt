@@ -1,0 +1,252 @@
+2023-08-31 02:21:31.174834: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-08-31 02:21:31.874075: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+INFO flwr 2023-08-31 02:21:33,301 | app.py:148 | Starting Flower server, config: ServerConfig(num_rounds=10, round_timeout=40)
+INFO:flwr:Starting Flower server, config: ServerConfig(num_rounds=10, round_timeout=40)
+INFO flwr 2023-08-31 02:21:33,309 | app.py:168 | Flower ECE: gRPC server running (10 rounds), SSL is disabled
+INFO:flwr:Flower ECE: gRPC server running (10 rounds), SSL is disabled
+INFO flwr 2023-08-31 02:21:33,309 | server.py:86 | Initializing global parameters
+INFO:flwr:Initializing global parameters
+INFO flwr 2023-08-31 02:21:33,309 | server.py:273 | Requesting initial parameters from one random client
+INFO:flwr:Requesting initial parameters from one random client
+INFO flwr 2023-08-31 02:22:02,957 | server.py:277 | Received initial parameters from one random client
+INFO:flwr:Received initial parameters from one random client
+INFO flwr 2023-08-31 02:22:02,958 | server.py:88 | Evaluating initial parameters
+INFO:flwr:Evaluating initial parameters
+INFO flwr 2023-08-31 02:22:02,958 | server.py:101 | FL starting
+INFO:flwr:FL starting
+DEBUG flwr 2023-08-31 02:22:03,015 | server.py:218 | fit_round 1: strategy sampled 2 clients (out of 2)
+DEBUG:flwr:fit_round 1: strategy sampled 2 clients (out of 2)
+DEBUG flwr 2023-08-31 02:22:08,214 | server.py:232 | fit_round 1 received 2 results and 0 failures
+DEBUG:flwr:fit_round 1 received 2 results and 0 failures
+WARNING flwr 2023-08-31 02:22:08,227 | fedavg.py:243 | No fit_metrics_aggregation_fn provided
+WARNING:flwr:No fit_metrics_aggregation_fn provided
+DEBUG flwr 2023-08-31 02:22:08,533 | server.py:168 | evaluate_round 1: strategy sampled 3 clients (out of 3)
+DEBUG:flwr:evaluate_round 1: strategy sampled 3 clients (out of 3)
+DEBUG flwr 2023-08-31 02:22:29,059 | server.py:182 | evaluate_round 1 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 1 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:22:30,528 | server.py:218 | fit_round 2: strategy sampled 7 clients (out of 7)
+DEBUG:flwr:fit_round 2: strategy sampled 7 clients (out of 7)
+DEBUG flwr 2023-08-31 02:22:54,194 | server.py:232 | fit_round 2 received 7 results and 0 failures
+DEBUG:flwr:fit_round 2 received 7 results and 0 failures
+DEBUG flwr 2023-08-31 02:22:55,912 | server.py:168 | evaluate_round 2: strategy sampled 8 clients (out of 8)
+DEBUG:flwr:evaluate_round 2: strategy sampled 8 clients (out of 8)
+DEBUG flwr 2023-08-31 02:23:38,673 | server.py:182 | evaluate_round 2 received 6 results and 2 failures
+DEBUG:flwr:evaluate_round 2 received 6 results and 2 failures
+DEBUG flwr 2023-08-31 02:23:39,742 | server.py:218 | fit_round 3: strategy sampled 6 clients (out of 6)
+DEBUG:flwr:fit_round 3: strategy sampled 6 clients (out of 6)
+DEBUG flwr 2023-08-31 02:24:01,409 | server.py:232 | fit_round 3 received 6 results and 0 failures
+DEBUG:flwr:fit_round 3 received 6 results and 0 failures
+DEBUG flwr 2023-08-31 02:24:02,509 | server.py:168 | evaluate_round 3: strategy sampled 6 clients (out of 6)
+DEBUG:flwr:evaluate_round 3: strategy sampled 6 clients (out of 6)
+DEBUG flwr 2023-08-31 02:24:37,841 | server.py:182 | evaluate_round 3 received 6 results and 0 failures
+DEBUG:flwr:evaluate_round 3 received 6 results and 0 failures
+DEBUG flwr 2023-08-31 02:24:38,905 | server.py:218 | fit_round 4: strategy sampled 6 clients (out of 6)
+DEBUG:flwr:fit_round 4: strategy sampled 6 clients (out of 6)
+DEBUG flwr 2023-08-31 02:25:00,598 | server.py:232 | fit_round 4 received 6 results and 0 failures
+DEBUG:flwr:fit_round 4 received 6 results and 0 failures
+DEBUG flwr 2023-08-31 02:25:01,713 | server.py:168 | evaluate_round 4: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 4: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:25:35,262 | server.py:182 | evaluate_round 4 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 4 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:25:36,245 | server.py:218 | fit_round 5: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:fit_round 5: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:25:50,770 | server.py:232 | fit_round 5 received 3 results and 0 failures
+DEBUG:flwr:fit_round 5 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:25:51,880 | server.py:168 | evaluate_round 5: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 5: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:26:21,402 | server.py:182 | evaluate_round 5 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 5 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:26:22,491 | server.py:218 | fit_round 6: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:fit_round 6: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:26:45,200 | server.py:232 | fit_round 6 received 3 results and 0 failures
+DEBUG:flwr:fit_round 6 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:26:46,305 | server.py:168 | evaluate_round 6: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 6: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:27:11,797 | server.py:182 | evaluate_round 6 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 6 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:27:12,881 | server.py:218 | fit_round 7: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:fit_round 7: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:27:33,502 | server.py:232 | fit_round 7 received 3 results and 0 failures
+DEBUG:flwr:fit_round 7 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:27:34,593 | server.py:168 | evaluate_round 7: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 7: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:28:00,242 | server.py:182 | evaluate_round 7 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 7 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:28:01,337 | server.py:218 | fit_round 8: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:fit_round 8: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:28:24,995 | server.py:232 | fit_round 8 received 3 results and 0 failures
+DEBUG:flwr:fit_round 8 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:28:26,101 | server.py:168 | evaluate_round 8: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 8: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:28:59,855 | server.py:182 | evaluate_round 8 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 8 received 3 results and 0 failures
+ round number --------------------->  1
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564']
+ round number --------------------->  2
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574']
+ round number --------------------->  3
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34588']
+ round number --------------------->  4
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40870', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40842']
+ round number --------------------->  5
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:60546', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40870', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826']
+ round number --------------------->  6
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40826']
+ round number --------------------->  7
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40858']
+ round number --------------------->  8
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34574']
+ round number --------------------->  9
+available cids ----------------->  ['ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:34564']
+no mem --------->  255536376.89453378 125829120.0
+no mem --------->  253073887.197693 125829120.0
+no mem --------->  304783704.55872667 167772160.0
+no mem --------->  250549380.83943987 125829120.0
+no mem --------->  254711778.6889549 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34588']
+ round number --------------------->  10
+available cids ----------------->  ['ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34588']
+no mem --------->  251819691.0652305 125829120.0
+no mem --------->  253055813.8484348 125829120.0
+no mem --------->  249745546.02422512 125829120.0
+no mem --------->  254401523.60837588 125829120.0
+no mem --------->  302661773.7816584 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40858']
+ round number --------------------->  11
+available cids ----------------->  ['ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40842']
+no mem --------->  253914079.2514739 125829120.0
+no mem --------->  249421387.33280152 125829120.0
+no mem --------->  251326252.7035046 125829120.0
+no mem --------->  304115953.620792 167772160.0
+no mem --------->  252022758.41732162 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826']
+ round number --------------------->  12
+available cids ----------------->  ['ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40858']
+no mem --------->  249246213.2399102 125829120.0
+no mem --------->  302626702.04156715 167772160.0
+no mem --------->  250757943.63282347 125829120.0
+no mem --------->  251062468.57236934 125829120.0
+no mem --------->  253642996.4537929 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40842']
+ round number --------------------->  13
+available cids ----------------->  ['ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34564']
+no mem --------->  250186176.29408792 125829120.0
+no mem --------->  252172156.31497908 125829120.0
+no mem --------->  249136505.53870526 125829120.0
+no mem --------->  254315280.58441588 125829120.0
+no mem --------->  301806784.10285044 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40858']
+ round number --------------------->  14
+available cids ----------------->  ['ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40842']
+no mem --------->  250816249.16493613 125829120.0
+no mem --------->  253169142.76208362 125829120.0
+no mem --------->  249061342.88583326 125829120.0
+no mem --------->  301287756.08278143 167772160.0
+no mem --------->  249860329.9035991 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40858']
+ round number --------------------->  15
+available cids ----------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40858']
+no mem --------->  249006628.27885735 125829120.0
+no mem --------->  253644274.31876358 125829120.0
+no mem --------->  250766035.92004284 125829120.0
+no mem --------->  250076330.40167248 125829120.0
+no mem --------->  300929668.1595048 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34588']
+ round number --------------------->  16
+available cids ----------------->  ['ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34574']
+no mem --------->  252705862.42646614 125829120.0
+no mem --------->  249610334.94950506 125829120.0
+no mem --------->  248965016.498334 125829120.0
+no mem --------->  250189212.79808423 125829120.0
+no mem --------->  300667711.83041316 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34588']
+ round number --------------------->  17
+available cids ----------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34588']
+no mem --------->  252159647.1608222 125829120.0
+no mem --------->  250252878.24985102 125829120.0
+no mem --------->  249701309.8841674 125829120.0
+no mem --------->  300467757.34510493 167772160.0
+no mem --------->  249828168.08085966 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34574']
+ round number --------------------->  18
+available cids ----------------->  ['ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:52120', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34574']
+no mem --------->  249956426.7416311 125829120.0
+no mem --------->  300310121.4804156 167772160.0
+no mem --------->  251802256.80265838 125829120.0
+no mem --------->  249580902.02710092 125829120.0
+no mem --------->  248958168.66876268 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:52120']
+sampled cids ---------------->  DEBUG flwr 2023-08-31 02:29:02,020 | server.py:218 | fit_round 9: strategy sampled 3 clients (out of 7)
+DEBUG:flwr:fit_round 9: strategy sampled 3 clients (out of 7)
+DEBUG flwr 2023-08-31 02:29:42,403 | server.py:232 | fit_round 9 received 2 results and 1 failures
+DEBUG:flwr:fit_round 9 received 2 results and 1 failures
+DEBUG flwr 2023-08-31 02:29:43,492 | server.py:168 | evaluate_round 9: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 9: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:30:09,055 | server.py:182 | evaluate_round 9 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 9 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:30:10,144 | server.py:218 | fit_round 10: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:fit_round 10: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:30:33,800 | server.py:232 | fit_round 10 received 3 results and 0 failures
+DEBUG:flwr:fit_round 10 received 3 results and 0 failures
+DEBUG flwr 2023-08-31 02:30:34,890 | server.py:168 | evaluate_round 10: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 10: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-08-31 02:31:09,454 | server.py:182 | evaluate_round 10 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 10 received 3 results and 0 failures
+INFO flwr 2023-08-31 02:31:09,455 | server.py:147 | FL finished in 546.4971198639832
+INFO:flwr:FL finished in 546.4971198639832
+INFO flwr 2023-08-31 02:31:09,456 | app.py:218 | app_fit: losses_distributed [(1, 22677.859375), (2, 22196.4345703125), (3, 21267.8984375), (4, 19292.836588541668), (5, 15256.118815104166), (6, 11112.834635416666), (7, 8505.088541666666), (8, 7132.13037109375), (9, 6183.136881510417), (10, 5556.828287760417)]
+INFO:flwr:app_fit: losses_distributed [(1, 22677.859375), (2, 22196.4345703125), (3, 21267.8984375), (4, 19292.836588541668), (5, 15256.118815104166), (6, 11112.834635416666), (7, 8505.088541666666), (8, 7132.13037109375), (9, 6183.136881510417), (10, 5556.828287760417)]
+INFO flwr 2023-08-31 02:31:09,457 | app.py:219 | app_fit: metrics_distributed_fit {}
+INFO:flwr:app_fit: metrics_distributed_fit {}
+INFO flwr 2023-08-31 02:31:09,457 | app.py:220 | app_fit: metrics_distributed {'accuracy': [(1, 0.27526666666666666), (2, 0.413), (3, 0.4968166666666667), (4, 0.6066666666666667), (5, 0.6913666666666667), (6, 0.7477666666666667), (7, 0.7880666666666667), (8, 0.8097333333333333), (9, 0.8319333333333333), (10, 0.8444666666666667)]}
+INFO:flwr:app_fit: metrics_distributed {'accuracy': [(1, 0.27526666666666666), (2, 0.413), (3, 0.4968166666666667), (4, 0.6066666666666667), (5, 0.6913666666666667), (6, 0.7477666666666667), (7, 0.7880666666666667), (8, 0.8097333333333333), (9, 0.8319333333333333), (10, 0.8444666666666667)]}
+INFO flwr 2023-08-31 02:31:09,457 | app.py:221 | app_fit: losses_centralized []
+INFO:flwr:app_fit: losses_centralized []
+INFO flwr 2023-08-31 02:31:09,457 | app.py:222 | app_fit: metrics_centralized {}
+INFO:flwr:app_fit: metrics_centralized {}
+['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:52120', 'ipv4:127.0.0.1:40826']
+ round number --------------------->  19
+available cids ----------------->  ['ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842']
+no mem --------->  300182655.2952574 167772160.0
+no mem --------->  249753398.66346678 125829120.0
+no mem --------->  251103363.75606015 125829120.0
+no mem --------->  249400951.86011264 125829120.0
+no mem --------->  248516620.95248723 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:34574']
+ round number --------------------->  20
+available cids ----------------->  ['ipv4:127.0.0.1:40826', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34574']
+no mem --------->  248224040.97894385 125829120.0
+no mem --------->  250664336.3480739 125829120.0
+no mem --------->  249605643.3481591 125829120.0
+no mem --------->  300077454.0375693 167772160.0
+no mem --------->  249264121.91492265 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:34588']
+ round number --------------------->  21
+available cids ----------------->  ['ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:34588', 'ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:40842', 'ipv4:127.0.0.1:40858', 'ipv4:127.0.0.1:40826']
+no mem --------->  247810854.9506155 125829120.0
+no mem --------->  249156571.55609965 125829120.0
+no mem --------->  299989152.6442803 167772160.0
+no mem --------->  250362959.25053015 125829120.0
+no mem --------->  250602982.65360355 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:34564']
+sampled cids ---------------->  ['ipv4:127.0.0.1:34564', 'ipv4:127.0.0.1:34574', 'ipv4:127.0.0.1:40842']
