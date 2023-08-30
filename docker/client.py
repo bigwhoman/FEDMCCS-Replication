@@ -113,6 +113,8 @@ def load_dedicated_dataset():
     dataset = MNIST("./data", train=True, download=True, transform=ToTensor())
     num_images = len(dataset) // NUM_CLIENTS
     partition_len = [num_images] * NUM_CLIENTS
+    partition_len[0] += len(dataset) - NUM_CLIENTS * partition_len[0]
+    print("------------------->",partition_len, NUM_CLIENTS,len(dataset))
     return torch.utils.data.random_split(dataset, partition_len, torch.Generator().manual_seed(SEED))[CLIENT_ID]
 MASTER_DATASET = load_dedicated_dataset()
 ADDITION_RATE = len(MASTER_DATASET) // 10
@@ -173,4 +175,3 @@ fl.client.start_numpy_client(
     server_address="host.docker.internal:" + os.environ['PORT'],
     client=FlowerClient(),
 )
-

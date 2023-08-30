@@ -155,15 +155,19 @@ class myClientManager(fl.server.SimpleClientManager):
         else :
             print(" selection -----------------> learning...")
             sampled_cids = self.linear_regression(available_cids,num_clients, self.CLIENT_FRACTION)
-        if len(sampled_cids) == 0 :
-             sampled_cids = random.sample(available_cids, int(num_clients*self.CLIENT_FRACTION))
+        if len(sampled_cids) < num_clients*self.CLIENT_FRACTION :
+             print(f"ONLY {len(sampled_cids)} CLINET SELECTED BY LEARNING !!!!!!!")
+             
+             for cid in sampled_cids :
+                 available_cids.remove(cid)
+             others = random.sample(available_cids, int(num_clients*self.CLIENT_FRACTION) - len(sampled_cids))
+             sampled_cids.extend(others)
         print("sampled cids ----------------> ", sampled_cids)
         return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
 fl.server.start_server(
     server_address="0.0.0.0:8080",
-    config=fl.server.ServerConfig(num_rounds=5,round_timeout=myClientManager.TIME_THRESHOLD),
+    config=fl.server.ServerConfig(num_rounds=10,round_timeout=myClientManager.TIME_THRESHOLD),
     client_manager=myClientManager(),
     strategy=strategy,
 )
-
