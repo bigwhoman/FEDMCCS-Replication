@@ -12,6 +12,7 @@ At first run the `python3 generate_clients.py` then run the `runner.sh` with bas
 If you get status code 137 it's likely caused by OOM killer. See `/var/log/kern.log`.
 
 ## Server
+
 The server runs on 0.0.0.0:8080 on the linux server.<br>
 Once the first clinet connects to the server, it starts the procedure. The overall server code is similar to  [Flower Base Server](https://github.com/adap/flower/blob/main/src/py/flwr/server/server.py) with changes to clientManager. 
 <br>
@@ -26,6 +27,7 @@ After some rounds, clients are selected according to the linear regression metho
 <li> Used Memories</li>
 <li> Training Times</li>
 <li> Used Dataset Sizes</li>
+
 `predict utilization` predicts the next rounds <b>Cores, Frequencies, Memories and Training Times</b> according to the <b>dataset size</b> which is going to be used.<br>
 If the wanted number of clients are selected according to `CLIENT FRACTION`, there will be no training. <br>
 After the clients are selected, we might have a problem : <b>Less clients are selected because of the budget limit</b>. So to mitigate this impact, if less clients are selected in the linear regression, the remainder of selected clients are randomly selected. This ensures convergence.
