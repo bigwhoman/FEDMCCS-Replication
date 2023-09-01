@@ -17,7 +17,23 @@ The server
 ## Test results
 ### Round Duration
 ![Round Duration](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/6093db09-1974-4312-a492-7d6b28b5e945)
-
+| Round        | FEDMCCS | Random Select |
+|---------|---------|---------------|
+| round1  | 19.2    | 13.5          |
+| round2  | 49.4    | 43            |
+| round3  | 79.6    | 72.2          |
+| round4  | 109.7   | 101.5         |
+| round5  | 139.7   | 130.8         |
+| round6  | 169.6   | 160           |
+| round7  | 191.5   | 189.3         |
+| round8  | 203.3   | 214.3         |
+| round9  | 219.3   | 229.9         |
+| round10 | 241.2   | 259.1         |
+| round11 | 356.4   | 373.6         |
+| round12 | 1329.4  | 1519.6        |
+| round13 | 2268.4  | 2662.6        |
+| round14 | 3183.4  | 3889.6        |
+| round15 | 4194.4  | 5120.6        |
 
 ### Convergence
 ![FEDMCCS and Random](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/f581f986-d3f5-4365-94ab-30d2425c9b02)
