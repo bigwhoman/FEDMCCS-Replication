@@ -161,6 +161,7 @@ This project implemented FEDMCCS which is a federated learning algorithm that se
 <li> Involving Better clients</li>
 <li> Learning the </li>
 <li> Satisfying Resource Constraints </li>
+
 ### Disadvantages
 <li> Might Give Sub-Optimal Results</li>
 <li> Fairness is unforseen</li>
