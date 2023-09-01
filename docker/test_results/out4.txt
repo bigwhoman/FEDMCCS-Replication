@@ -1,0 +1,739 @@
+2023-03-20 20:35:17.247721: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-03-20 20:35:17.802186: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+INFO flwr 2023-03-20 20:35:18,827 | app.py:148 | Starting Flower server, config: ServerConfig(num_rounds=20, round_timeout=None)
+INFO:flwr:Starting Flower server, config: ServerConfig(num_rounds=20, round_timeout=None)
+INFO flwr 2023-03-20 20:35:18,832 | app.py:168 | Flower ECE: gRPC server running (20 rounds), SSL is disabled
+INFO:flwr:Flower ECE: gRPC server running (20 rounds), SSL is disabled
+INFO flwr 2023-03-20 20:35:18,832 | server.py:86 | Initializing global parameters
+INFO:flwr:Initializing global parameters
+INFO flwr 2023-03-20 20:35:18,832 | server.py:273 | Requesting initial parameters from one random client
+INFO:flwr:Requesting initial parameters from one random client
+ round number --------------------->  1
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450']
+INFO flwr 2023-03-20 20:37:05,402 | server.py:277 | Received initial parameters from one random client
+INFO:flwr:Received initial parameters from one random client
+INFO flwr 2023-03-20 20:37:05,402 | server.py:88 | Evaluating initial parameters
+INFO:flwr:Evaluating initial parameters
+INFO flwr 2023-03-20 20:37:05,402 | server.py:101 | FL starting
+INFO:flwr:FL starting
+round 1 duration = 1.5634126663208008
+ round number --------------------->  2
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676']
+DEBUG flwr 2023-03-20 20:37:06,120 | server.py:218 | fit_round 1: strategy sampled 2 clients (out of 3)
+DEBUG:flwr:fit_round 1: strategy sampled 2 clients (out of 3)
+DEBUG flwr 2023-03-20 20:37:23,865 | server.py:232 | fit_round 1 received 2 results and 0 failures
+DEBUG:flwr:fit_round 1 received 2 results and 0 failures
+WARNING flwr 2023-03-20 20:37:23,873 | fedavg.py:243 | No fit_metrics_aggregation_fn provided
+WARNING:flwr:No fit_metrics_aggregation_fn provided
+round 2 duration = 17.75319218635559
+ round number --------------------->  3
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:37:24,664 | server.py:168 | evaluate_round 1: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:evaluate_round 1: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:37:37,334 | server.py:182 | evaluate_round 1 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 1 received 5 results and 0 failures
+round 3 duration = 12.670000553131104
+ round number --------------------->  4
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 20:37:38,094 | server.py:218 | fit_round 2: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:fit_round 2: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:37:55,744 | server.py:232 | fit_round 2 received 5 results and 0 failures
+DEBUG:flwr:fit_round 2 received 5 results and 0 failures
+round 4 duration = 17.66605567932129
+ round number --------------------->  5
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:37:56,523 | server.py:168 | evaluate_round 2: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:evaluate_round 2: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:38:09,019 | server.py:182 | evaluate_round 2 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 2 received 5 results and 0 failures
+round 5 duration = 12.496885776519775
+ round number --------------------->  6
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 20:38:09,786 | server.py:218 | fit_round 3: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:fit_round 3: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:38:27,496 | server.py:232 | fit_round 3 received 5 results and 0 failures
+DEBUG:flwr:fit_round 3 received 5 results and 0 failures
+round 6 duration = 17.72706890106201
+ round number --------------------->  7
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:38:28,273 | server.py:168 | evaluate_round 3: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:evaluate_round 3: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:38:40,768 | server.py:182 | evaluate_round 3 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 3 received 5 results and 0 failures
+round 7 duration = 12.495120525360107
+ round number --------------------->  8
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450']
+DEBUG flwr 2023-03-20 20:38:41,539 | server.py:218 | fit_round 4: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:fit_round 4: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:38:59,164 | server.py:232 | fit_round 4 received 5 results and 0 failures
+DEBUG:flwr:fit_round 4 received 5 results and 0 failures
+round 8 duration = 17.638678550720215
+ round number --------------------->  9
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:38:59,939 | server.py:168 | evaluate_round 4: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:evaluate_round 4: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:39:12,398 | server.py:182 | evaluate_round 4 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 4 received 5 results and 0 failures
+round 9 duration = 12.458856344223022
+ round number --------------------->  10
+ selection -----------------> random...
+sampled cids ---------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 20:39:13,245 | server.py:218 | fit_round 5: strategy sampled 5 clients (out of 5)
+DEBUG:flwr:fit_round 5: strategy sampled 5 clients (out of 5)
+DEBUG flwr 2023-03-20 20:39:30,851 | server.py:232 | fit_round 5 received 5 results and 0 failures
+DEBUG:flwr:fit_round 5 received 5 results and 0 failures
+round 10 duration = 17.622588396072388
+ round number --------------------->  11
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57450']
+no mem --------->  215742973.60207158 125829120.0
+no mem --------->  255050862.23125234 167772160.0
+no mem --------->  217231935.40308243 125829120.0
+no mem --------->  234126185.82777637 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 20:39:31,645 | server.py:168 | evaluate_round 5: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:evaluate_round 5: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:39:43,988 | server.py:182 | evaluate_round 5 received 2 results and 0 failures
+DEBUG:flwr:evaluate_round 5 received 2 results and 0 failures
+round 11 duration = 12.343022584915161
+ round number --------------------->  12
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692']
+no mem --------->  214306868.45420295 125829120.0
+no mem --------->  231557262.4964317 125829120.0
+no mem --------->  216359878.77173713 125829120.0
+no mem --------->  253736518.3406325 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676']
+DEBUG flwr 2023-03-20 20:39:44,766 | server.py:218 | fit_round 6: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:fit_round 6: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:40:02,368 | server.py:232 | fit_round 6 received 2 results and 0 failures
+DEBUG:flwr:fit_round 6 received 2 results and 0 failures
+round 12 duration = 17.609327793121338
+ round number --------------------->  13
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450']
+no mem --------->  213640249.3912054 125829120.0
+no mem --------->  227480109.74625087 125829120.0
+no mem --------->  215926176.17076027 125829120.0
+no mem --------->  253094043.7409911 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 20:40:03,153 | server.py:168 | evaluate_round 6: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:evaluate_round 6: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:40:15,645 | server.py:182 | evaluate_round 6 received 2 results and 0 failures
+DEBUG:flwr:evaluate_round 6 received 2 results and 0 failures
+round 13 duration = 12.492421865463257
+ round number --------------------->  14
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450']
+no mem --------->  215666694.08041754 125829120.0
+no mem --------->  213255341.94789028 125829120.0
+no mem --------->  252713136.47334105 167772160.0
+no mem --------->  225658287.54074582 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676']
+DEBUG flwr 2023-03-20 20:40:16,417 | server.py:218 | fit_round 7: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:fit_round 7: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:40:34,011 | server.py:232 | fit_round 7 received 2 results and 0 failures
+DEBUG:flwr:fit_round 7 received 2 results and 0 failures
+round 14 duration = 17.597594738006592
+ round number --------------------->  15
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690']
+no mem --------->  252461077.3566426 167772160.0
+no mem --------->  213004720.9114115 125829120.0
+no mem --------->  224492775.25980306 125829120.0
+no mem --------->  215494013.03911498 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 20:40:34,784 | server.py:168 | evaluate_round 7: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:evaluate_round 7: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:40:41,458 | server.py:182 | evaluate_round 7 received 2 results and 0 failures
+DEBUG:flwr:evaluate_round 7 received 2 results and 0 failures
+round 15 duration = 6.6737000942230225
+ round number --------------------->  16
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680']
+no mem --------->  215370819.47183332 125829120.0
+no mem --------->  223742363.2365333 125829120.0
+no mem --------->  252281946.74950987 167772160.0
+no mem --------->  212828549.49403962 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:40:42,229 | server.py:218 | fit_round 8: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:fit_round 8: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:40:51,634 | server.py:232 | fit_round 8 received 2 results and 0 failures
+DEBUG:flwr:fit_round 8 received 2 results and 0 failures
+round 16 duration = 9.410087823867798
+ round number --------------------->  17
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692']
+no mem --------->  212697943.76782382 125829120.0
+no mem --------->  223218813.6064087 125829120.0
+no mem --------->  217811585.61855024 125829120.0
+no mem --------->  252148094.02793884 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 20:40:52,415 | server.py:168 | evaluate_round 8: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:evaluate_round 8: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:40:59,051 | server.py:182 | evaluate_round 8 received 2 results and 0 failures
+DEBUG:flwr:evaluate_round 8 received 2 results and 0 failures
+round 17 duration = 6.636377334594727
+ round number --------------------->  18
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45692']
+no mem --------->  252044278.38684902 167772160.0
+no mem --------->  222832758.51151007 125829120.0
+no mem --------->  212597250.14349374 125829120.0
+no mem --------->  217169109.787014 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 20:40:59,824 | server.py:218 | fit_round 9: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:fit_round 9: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:41:04,965 | server.py:232 | fit_round 9 received 2 results and 0 failures
+DEBUG:flwr:fit_round 9 received 2 results and 0 failures
+round 18 duration = 5.147581338882446
+ round number --------------------->  19
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692']
+no mem --------->  253291043.6933049 167772160.0
+no mem --------->  216768157.16105595 125829120.0
+no mem --------->  222536321.4207703 125829120.0
+no mem --------->  212517248.47558933 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 20:41:05,746 | server.py:168 | evaluate_round 9: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:evaluate_round 9: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:41:18,201 | server.py:182 | evaluate_round 9 received 2 results and 0 failures
+DEBUG:flwr:evaluate_round 9 received 2 results and 0 failures
+round 19 duration = 12.454688310623169
+ round number --------------------->  20
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57450']
+no mem --------->  212452154.9214421 125829120.0
+no mem --------->  252855198.55231613 167772160.0
+no mem --------->  222301542.0560213 125829120.0
+no mem --------->  216494084.2702252 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:41:18,974 | server.py:218 | fit_round 10: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:fit_round 10: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:41:28,395 | server.py:232 | fit_round 10 received 2 results and 0 failures
+DEBUG:flwr:fit_round 10 received 2 results and 0 failures
+round 20 duration = 9.424282789230347
+ round number --------------------->  21
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692']
+no mem --------->  222110995.71207625 125829120.0
+no mem --------->  214972244.33205298 125829120.0
+no mem --------->  212398157.52037674 125829120.0
+no mem --------->  252533796.40364963 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 20:41:29,169 | server.py:168 | evaluate_round 10: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:evaluate_round 10: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:41:35,791 | server.py:182 | evaluate_round 10 received 2 results and 0 failures
+DEBUG:flwr:evaluate_round 10 received 2 results and 0 failures
+round 21 duration = 6.622138261795044
+ round number --------------------->  22
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45676']
+no mem --------->  212352641.8520009 125829120.0
+no mem --------->  252286993.14458725 167772160.0
+no mem --------->  221953258.14869604 125829120.0
+no mem --------->  214030764.81348073 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 20:41:36,563 | server.py:218 | fit_round 11: strategy sampled 2 clients (out of 5)
+DEBUG:flwr:fit_round 11: strategy sampled 2 clients (out of 5)
+DEBUG flwr 2023-03-20 20:41:45,978 | server.py:232 | fit_round 11 received 2 results and 0 failures
+DEBUG:flwr:fit_round 11 received 2 results and 0 failures
+round 22 duration = 9.420628786087036
+ round number --------------------->  23
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:57450']
+no mem --------->  221820527.3924822 125829120.0
+no mem --------->  252091517.36611584 167772160.0
+no mem --------->  212313755.01634136 125829120.0
+no mem --------->  213401976.78316057 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 20:41:47,061 | server.py:168 | evaluate_round 11: strategy sampled 3 clients (out of 6)
+DEBUG:flwr:evaluate_round 11: strategy sampled 3 clients (out of 6)
+DEBUG flwr 2023-03-20 20:56:03,833 | server.py:182 | evaluate_round 11 received 3 results and 0 failures
+DEBUG:flwr:evaluate_round 11 received 3 results and 0 failures
+round 23 duration = 856.7719941139221
+ round number --------------------->  24
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:60908']
+no mem --------->  221707293.5440039 125829120.0
+no mem --------->  251932865.4204358 167772160.0
+no mem --------->  212946780.04910618 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39498']
+sampled cids ---------------->  ['ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39498']
+DEBUG flwr 2023-03-20 20:56:07,246 | server.py:218 | fit_round 12: strategy sampled 6 clients (out of 11)
+DEBUG:flwr:fit_round 12: strategy sampled 6 clients (out of 11)
+DEBUG flwr 2023-03-20 20:57:55,865 | server.py:232 | fit_round 12 received 6 results and 0 failures
+DEBUG:flwr:fit_round 12 received 6 results and 0 failures
+round 24 duration = 108.63454580307007
+ round number --------------------->  25
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:57450']
+no mem --------->  251801527.6815097 167772160.0
+no mem --------->  215338152.11940297 125829120.0
+no time --------->  79.49401760101318 20
+no mem --------->  221609554.65717682 125829120.0
+no mem --------->  214749615.15789473 125829120.0
+no time --------->  89.29411172866821 20
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  212602008.12419677 125829120.0
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  212250811.72922698 125829120.0
+no mem --------->  302560039.6619718 209715200.0
+no time --------->  85.6023600101471 20
+selected clients ------------->  ['ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39496']
+DEBUG flwr 2023-03-20 20:57:58,379 | server.py:168 | evaluate_round 12: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 12: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:11:23,534 | server.py:182 | evaluate_round 12 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 12 received 5 results and 0 failures
+round 25 duration = 805.1547005176544
+ round number --------------------->  26
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:39496']
+no mem --------->  214749615.15789473 125829120.0
+no time --------->  89.29411172866821 20
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  212224982.64785916 125829120.0
+no mem --------->  221524333.90279168 125829120.0
+no mem --------->  215338152.11940297 125829120.0
+no time --------->  79.49401760101318 20
+no mem --------->  302560039.6619718 209715200.0
+no time --------->  85.6023600101471 20
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  212331826.11378044 125829120.0
+no mem --------->  251691009.43044725 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:39498']
+DEBUG flwr 2023-03-20 21:11:26,034 | server.py:218 | fit_round 13: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 13: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:13:23,966 | server.py:232 | fit_round 13 received 5 results and 0 failures
+DEBUG:flwr:fit_round 13 received 5 results and 0 failures
+round 26 duration = 117.94416642189026
+ round number --------------------->  27
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:45690']
+no mem --------->  215283601.2972973 125829120.0
+no time --------->  88.39981842041016 20
+no mem --------->  312200892.6804996 209715200.0
+no time --------->  114.70508842456658 20
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  212114391.0280408 125829120.0
+no mem --------->  212202066.73558542 125829120.0
+no mem --------->  251596723.80193523 167772160.0
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  221449371.0877114 125829120.0
+no mem --------->  223838140.27836603 125829120.0
+no time --------->  111.41752370165797 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731826 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 21:13:26,579 | server.py:168 | evaluate_round 13: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 13: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:25:41,533 | server.py:182 | evaluate_round 13 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 13 received 5 results and 0 failures
+round 27 duration = 734.9542455673218
+ round number --------------------->  28
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:39498']
+no mem --------->  222421304.68674266 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  211935630.0965261 125829120.0
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  215283601.2972973 125829120.0
+no time --------->  88.39981842041016 20
+no mem --------->  251515339.16103926 167772160.0
+no mem --------->  212181597.4532603 125829120.0
+no mem --------->  221382919.24502644 125829120.0
+no mem --------->  312200892.6804996 209715200.0
+no time --------->  114.7050884245666 20
+no mem --------->  223838140.27836603 125829120.0
+no time --------->  111.41752370165796 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 21:25:43,828 | server.py:218 | fit_round 14: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 14: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:27:57,967 | server.py:232 | fit_round 14 received 5 results and 0 failures
+DEBUG:flwr:fit_round 14 received 5 results and 0 failures
+round 28 duration = 134.15248560905457
+ round number --------------------->  29
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:39496']
+no mem --------->  222131285.76031998 125829120.0
+no time --------->  123.70278548270925 20
+no mem --------->  221323606.7854081 125829120.0
+no mem --------->  211807142.48162997 125829120.0
+no mem --------->  219882644.62926528 125829120.0
+no time --------->  124.8279483462713 20
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  251444377.21877575 167772160.0
+no mem --------->  312602128.65783596 209715200.0
+no time --------->  137.1236146856686 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731826 20
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  212163202.83383352 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:56550']
+DEBUG flwr 2023-03-20 21:28:00,477 | server.py:168 | evaluate_round 14: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 14: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:41:56,733 | server.py:182 | evaluate_round 14 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 14 received 5 results and 0 failures
+round 29 duration = 836.2565846443176
+ round number --------------------->  30
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:57450']
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  251381956.26018563 167772160.0
+no mem --------->  219882644.62926528 125829120.0
+no time --------->  124.82794834627127 20
+no mem --------->  211698057.32888308 125829120.0
+no mem --------->  311668508.3886709 209715200.0
+no time --------->  137.34238481971119 20
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731826 20
+no mem --------->  212146582.6748054 125829120.0
+no mem --------->  221399701.50593114 125829120.0
+no time --------->  124.11206780575218 20
+no mem --------->  221270341.81353152 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 21:41:59,035 | server.py:218 | fit_round 15: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 15: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:45:00,569 | server.py:232 | fit_round 15 received 5 results and 0 failures
+DEBUG:flwr:fit_round 15 received 5 results and 0 failures
+round 30 duration = 181.55120086669922
+ round number --------------------->  31
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45690']
+no mem --------->  221110511.67479566 125829120.0
+no time --------->  124.27385407326332 20
+no mem --------->  212131492.02744693 125829120.0
+no mem --------->  211604288.3221851 125829120.0
+no mem --------->  311615107.1600848 209715200.0
+no time --------->  178.896105304355 20
+no mem --------->  221617700.22071058 125829120.0
+no time --------->  166.17430903227304 20
+no mem --------->  222421304.68674272 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  251187799.2682838 167772160.0
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  221184891.55375674 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45692']
+DEBUG flwr 2023-03-20 21:45:02,987 | server.py:168 | evaluate_round 15: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 15: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 21:59:49,533 | server.py:182 | evaluate_round 15 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 15 received 5 results and 0 failures
+round 31 duration = 886.5462236404419
+ round number --------------------->  32
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45676']
+no mem --------->  251029179.92415932 167772160.0
+no mem --------->  211522821.35521543 125829120.0
+no mem --------->  214333273.94594595 125829120.0
+no time --------->  87.70035767555237 20
+no mem --------->  221523840.81323275 125829120.0
+no time --------->  171.0148821967678 20
+no mem --------->  221107347.65589613 125829120.0
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  222421304.68674266 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  212117729.0438371 125829120.0
+no mem --------->  220955598.14218116 125829120.0
+no time --------->  124.36051992223275 20
+no mem --------->  310936267.4271014 209715200.0
+no time --------->  184.28821714187063 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57538']
+DEBUG flwr 2023-03-20 21:59:51,936 | server.py:218 | fit_round 16: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 16: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:02:47,373 | server.py:232 | fit_round 16 received 5 results and 0 failures
+DEBUG:flwr:fit_round 16 received 5 results and 0 failures
+round 32 duration = 175.45333576202393
+ round number --------------------->  33
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39498']
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+no mem --------->  220859061.2089209 125829120.0
+no time --------->  124.41452718122879 20
+no mem --------->  222322173.1924805 125829120.0
+no time --------->  193.43359225675016 20
+no mem --------->  219220153.2027078 125829120.0
+no time --------->  138.8552244795736 20
+no mem --------->  310634934.60849464 209715200.0
+no time --------->  186.6817427110069 20
+no mem --------->  221047890.4034473 125829120.0
+no mem --------->  250897159.31394145 167772160.0
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  212105125.8963693 125829120.0
+no mem --------->  211451384.50831962 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:57538']
+DEBUG flwr 2023-03-20 22:02:49,792 | server.py:168 | evaluate_round 16: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 16: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:17:06,733 | server.py:182 | evaluate_round 16 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 16 received 5 results and 0 failures
+round 33 duration = 856.9415948390961
+ round number --------------------->  34
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39498']
+no mem --------->  211388232.8528892 125829120.0
+no mem --------->  250785564.5262496 167772160.0
+no mem --------->  310464717.6444627 209715200.0
+no time --------->  188.03379808152695 20
+no mem --------->  221845913.38279414 125829120.0
+no time --------->  190.30516396129997 20
+no mem --------->  220993468.5790996 125829120.0
+no mem --------->  222421304.68674266 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  220793135.04039705 125829120.0
+no time --------->  124.45140935199844 20
+no mem --------->  212093541.90013474 125829120.0
+no mem --------->  219220153.20270777 125829120.0
+no time --------->  138.85522447957362 20
+no mem --------->  214188684.98550725 125829120.0
+no time --------->  81.7013750076294 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 22:17:09,239 | server.py:218 | fit_round 17: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 17: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:20:41,270 | server.py:232 | fit_round 17 received 5 results and 0 failures
+DEBUG:flwr:fit_round 17 received 5 results and 0 failures
+round 34 duration = 212.04514622688293
+ round number --------------------->  35
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:56550']
+no mem --------->  219220153.2027078 125829120.0
+no time --------->  138.85522447957362 20
+no mem --------->  250689995.60436276 167772160.0
+no mem --------->  220943468.49467546 125829120.0
+no mem --------->  221230502.5766434 125829120.0
+no time --------->  101.78311330181745 20
+no mem --------->  212082858.23893902 125829120.0
+no mem --------->  310725667.995875 209715200.0
+no time --------->  205.18183803180185 20
+no mem --------->  222421304.68674272 125829120.0
+no time --------->  114.71718790731826 20
+no mem --------->  221915125.41408738 125829120.0
+no time --------->  207.6453808968029 20
+no mem --------->  211340984.28432527 125829120.0
+no mem --------->  220745252.58299732 125829120.0
+no time --------->  124.47819702994528 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57538']
+DEBUG flwr 2023-03-20 22:20:43,739 | server.py:168 | evaluate_round 17: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 17: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:35:05,733 | server.py:182 | evaluate_round 17 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 17 received 5 results and 0 failures
+round 35 duration = 861.9947102069855
+ round number --------------------->  36
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:39498']
+no mem --------->  212072973.8750368 125829120.0
+no mem --------->  220708897.81081378 125829120.0
+no time --------->  124.49853558360294 20
+no mem --------->  310239992.4417492 209715200.0
+no time --------->  203.3963312191178 20
+no mem --------->  219220153.2027078 125829120.0
+no time --------->  138.85522447957362 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  250607231.6645429 167772160.0
+no mem --------->  211298646.06984997 125829120.0
+no mem --------->  221230502.5766434 125829120.0
+no time --------->  101.78311330181747 20
+no mem --------->  220897372.29249072 125829120.0
+no mem --------->  221591501.9107342 125829120.0
+no time --------->  208.36335488111683 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:39496']
+DEBUG flwr 2023-03-20 22:35:08,236 | server.py:218 | fit_round 18: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 18: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:38:29,376 | server.py:232 | fit_round 18 received 5 results and 0 failures
+DEBUG:flwr:fit_round 18 received 5 results and 0 failures
+round 36 duration = 201.15482711791992
+ round number --------------------->  37
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:60908']
+no mem --------->  221130732.58876625 125829120.0
+no time --------->  200.50227845442046 20
+no mem --------->  211260490.5507029 125829120.0
+no mem --------->  219220153.2027078 125829120.0
+no time --------->  138.85522447957362 20
+no mem --------->  220680355.0661098 125829120.0
+no time --------->  124.5145037250554 20
+no mem --------->  250484711.41697964 167772160.0
+no mem --------->  212063802.34380168 125829120.0
+no mem --------->  310218489.781338 209715200.0
+no time --------->  209.25469399392597 20
+no mem --------->  222919965.1396 125829120.0
+no time --------->  112.49423014135894 20
+no mem --------->  220854739.9426414 125829120.0
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731826 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680']
+DEBUG flwr 2023-03-20 22:38:31,898 | server.py:168 | evaluate_round 18: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 18: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:49:30,033 | server.py:182 | evaluate_round 18 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 18 received 5 results and 0 failures
+round 37 duration = 658.1342799663544
+ round number --------------------->  38
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:60896']
+no mem --------->  220888677.4188601 125829120.0
+no time --------->  196.3726324485147 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731826 20
+no mem --------->  222722176.62452564 125829120.0
+no time --------->  113.0173368706127 20
+no mem --------->  211225927.0748711 125829120.0
+no mem --------->  220657350.631224 125829120.0
+no time --------->  124.52737347791552 20
+no mem --------->  212055269.21773887 125829120.0
+no mem --------->  220815195.15171775 125829120.0
+no mem --------->  309832514.03230923 209715200.0
+no time --------->  204.53672199324623 20
+no mem --------->  250376667.62099424 167772160.0
+no mem --------->  219220153.2027078 125829120.0
+no time --------->  138.85522447957362 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:45676']
+DEBUG flwr 2023-03-20 22:49:32,536 | server.py:218 | fit_round 19: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 19: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 22:52:45,469 | server.py:232 | fit_round 19 received 5 results and 0 failures
+DEBUG:flwr:fit_round 19 received 5 results and 0 failures
+round 38 duration = 192.95033407211304
+ round number --------------------->  39
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:45690']
+no mem --------->  212830123.5492553 125829120.0
+no mem --------->  220783280.947279 125829120.0
+no mem --------->  220739480.41413283 125829120.0
+no time --------->  193.82721763707303 20
+no mem --------->  309432559.5606758 209715200.0
+no time --------->  197.72823886279156 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731826 20
+no mem --------->  250280677.6873923 167772160.0
+no mem --------->  222638967.79822963 125829120.0
+no time --------->  113.23740575050891 20
+no mem --------->  219220153.2027078 125829120.0
+no time --------->  138.85522447957362 20
+no mem --------->  211194471.20139492 125829120.0
+no mem --------->  220638415.1186702 125829120.0
+no time --------->  124.53796688601518 20
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 22:52:47,787 | server.py:168 | evaluate_round 19: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 19: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 23:05:14,033 | server.py:182 | evaluate_round 19 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 19 received 5 results and 0 failures
+round 39 duration = 746.2461421489716
+ round number --------------------->  40
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:56550', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:57450']
+no mem --------->  212660335.62742823 125829120.0
+no mem --------->  220753521.9743228 125829120.0
+no mem --------->  219220153.20270777 125829120.0
+no time --------->  138.85522447957362 20
+no mem --------->  220622556.70383415 125829120.0
+no time --------->  124.54683882226169 20
+no mem --------->  222421304.6867427 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  250194831.0173468 167772160.0
+no mem --------->  222593135.88403493 125829120.0
+no time --------->  113.3586209925609 20
+no mem --------->  309184126.94756895 209715200.0
+no time --------->  193.4991343637612 20
+no mem --------->  220638307.3829477 125829120.0
+no time --------->  192.10112848020313 20
+no mem --------->  211165721.8538422 125829120.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:39496']
+DEBUG flwr 2023-03-20 23:05:16,531 | server.py:218 | fit_round 20: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:fit_round 20: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 23:08:33,272 | server.py:232 | fit_round 20 received 5 results and 0 failures
+DEBUG:flwr:fit_round 20 received 5 results and 0 failures
+round 40 duration = 196.75234413146973
+ round number --------------------->  41
+ selection -----------------> learning...
+available cids ----------------->  ['ipv4:127.0.0.1:45676', 'ipv4:127.0.0.1:60908', 'ipv4:127.0.0.1:45680', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:39496', 'ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:45690', 'ipv4:127.0.0.1:45692', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:56550']
+no mem --------->  220609081.68968818 125829120.0
+no time --------->  124.55437737309792 20
+no mem --------->  220657264.17250198 125829120.0
+no time --------->  190.29917352214628 20
+no mem --------->  222421304.68674266 125829120.0
+no time --------->  114.71718790731825 20
+no mem --------->  225239150.2198168 125829120.0
+no time --------->  121.18493360026372 20
+no mem --------->  212515902.70505264 125829120.0
+no mem --------->  309014823.5179731 209715200.0
+no time --------->  190.6170574622998 20
+no mem --------->  211139344.12782186 125829120.0
+no mem --------->  220725707.04310343 125829120.0
+no mem --------->  221904304.65354273 125829120.0
+no time --------->  159.295126987014 20
+no mem --------->  250117600.5348345 167772160.0
+selected clients ------------->  ['ipv4:127.0.0.1:57450']
+sampled cids ---------------->  ['ipv4:127.0.0.1:57450', 'ipv4:127.0.0.1:60896', 'ipv4:127.0.0.1:39498', 'ipv4:127.0.0.1:57538', 'ipv4:127.0.0.1:45690']
+DEBUG flwr 2023-03-20 23:08:35,890 | server.py:168 | evaluate_round 20: strategy sampled 5 clients (out of 11)
+DEBUG:flwr:evaluate_round 20: strategy sampled 5 clients (out of 11)
+DEBUG flwr 2023-03-20 23:20:48,233 | server.py:182 | evaluate_round 20 received 5 results and 0 failures
+DEBUG:flwr:evaluate_round 20 received 5 results and 0 failures
+INFO flwr 2023-03-20 23:20:48,234 | server.py:147 | FL finished in 9822.831033887001
+INFO:flwr:FL finished in 9822.831033887001
+INFO flwr 2023-03-20 23:20:48,234 | app.py:218 | app_fit: losses_distributed [(1, 22644.065234375), (2, 22145.39765625), (3, 21187.2671875), (4, 19185.468359375), (5, 15277.49853515625), (6, 10790.376953125), (7, 8182.575439453125), (8, 6835.88427734375), (9, 5983.8662109375), (10, 5424.6064453125), (11, 5026.219889322917), (12, 4810.0306640625), (13, 4613.29482421875), (14, 4448.9875), (15, 4261.17626953125), (16, 4123.82255859375), (17, 3991.421142578125), (18, 3876.71806640625), (19, 3809.02255859375), (20, 3692.80107421875)]
+INFO:flwr:app_fit: losses_distributed [(1, 22644.065234375), (2, 22145.39765625), (3, 21187.2671875), (4, 19185.468359375), (5, 15277.49853515625), (6, 10790.376953125), (7, 8182.575439453125), (8, 6835.88427734375), (9, 5983.8662109375), (10, 5424.6064453125), (11, 5026.219889322917), (12, 4810.0306640625), (13, 4613.29482421875), (14, 4448.9875), (15, 4261.17626953125), (16, 4123.82255859375), (17, 3991.421142578125), (18, 3876.71806640625), (19, 3809.02255859375), (20, 3692.80107421875)]
+INFO flwr 2023-03-20 23:20:48,234 | app.py:219 | app_fit: metrics_distributed_fit {}
+INFO:flwr:app_fit: metrics_distributed_fit {}
+INFO flwr 2023-03-20 23:20:48,234 | app.py:220 | app_fit: metrics_distributed {'accuracy': [(1, 0.33706), (2, 0.48596), (3, 0.56944), (4, 0.63146), (5, 0.7035), (6, 0.7524), (7, 0.7965), (8, 0.8151), (9, 0.8366), (10, 0.84975), (11, 0.8592333333333333), (12, 0.86554), (13, 0.86896), (14, 0.87304), (15, 0.87774), (16, 0.88184), (17, 0.8863), (18, 0.88876), (19, 0.89018), (20, 0.8935)]}
+INFO:flwr:app_fit: metrics_distributed {'accuracy': [(1, 0.33706), (2, 0.48596), (3, 0.56944), (4, 0.63146), (5, 0.7035), (6, 0.7524), (7, 0.7965), (8, 0.8151), (9, 0.8366), (10, 0.84975), (11, 0.8592333333333333), (12, 0.86554), (13, 0.86896), (14, 0.87304), (15, 0.87774), (16, 0.88184), (17, 0.8863), (18, 0.88876), (19, 0.89018), (20, 0.8935)]}
+INFO flwr 2023-03-20 23:20:48,234 | app.py:221 | app_fit: losses_centralized []
+INFO:flwr:app_fit: losses_centralized []
+INFO flwr 2023-03-20 23:20:48,234 | app.py:222 | app_fit: metrics_centralized {}
+INFO:flwr:app_fit: metrics_centralized {}

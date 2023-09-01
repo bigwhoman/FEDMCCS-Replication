@@ -10,7 +10,7 @@ from logging import INFO
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.criterion import Criterion
 from typing import Dict, List, Optional
-
+import time
 # Define metric aggregation function
 def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     # Multiply accuracy of each client by number of examples used
@@ -28,14 +28,16 @@ strategy = fl.server.strategy.FedAvg(evaluate_metrics_aggregation_fn=weighted_av
 class myClientManager(fl.server.SimpleClientManager):
     round_number = 0
     client_configs = {}
-    
+    round_duration = 0
+    round_start = 0
+    round_end = 0
     ### TODO
-    RANDOM_ROUNDS = 2
+    RANDOM_ROUNDS = 5
     CPU_BUDGET = 1 
-    MEM_BUDGET = 0.7 
+    MEM_BUDGET = 0.8 
     ENERGY_BUDGET = 1
-    TIME_THRESHOLD = 50
-    CLIENT_FRACTION = 1
+    TIME_THRESHOLD = 20
+    CLIENT_FRACTION = 0.5
     ###
 
     def predict_utilization(
@@ -104,6 +106,13 @@ class myClientManager(fl.server.SimpleClientManager):
         criterion: Optional[Criterion] = None,
     ) -> List[ClientProxy]:
         self.round_number += 1
+        if self.round_number > 1 :
+            self.MEM_BUDGET *= 1.05
+            self.ENERGY_BUDGET *= 1.05
+            self.TIME_THRESHOLD *= 1.05
+            self.round_duration = time.time() - self.round_start
+            print(f"round {self.round_number - 1} duration = {self.round_duration}") 
+
         print(" round number ---------------------> ",self.round_number)
         # Block until at least num_clients are connected.
         if min_num_clients is None:
@@ -147,27 +156,28 @@ class myClientManager(fl.server.SimpleClientManager):
             # print("cliennnnnnnnnnnnnnnnnnnnnnnnntttttttt  configs --------------> ",self.client_configs[cid])
             self.client_configs[cid]["dataset_size"] = serv_conf["dataset_size"]
 
-        # print("chooooooooooooooookiiiiiiii --------------------------------------")
+        sampled_cids = []
         if self.round_number <= self.RANDOM_ROUNDS * 2 : 
             print(" selection -----------------> random...")
             sampled_cids = random.sample(available_cids, num_clients)
-
+    
         else :
             print(" selection -----------------> learning...")
             sampled_cids = self.linear_regression(available_cids,num_clients, self.CLIENT_FRACTION)
-        if len(sampled_cids) < num_clients*self.CLIENT_FRACTION :
-             print(f"ONLY {len(sampled_cids)} CLINET SELECTED BY LEARNING !!!!!!!")
+            if len(sampled_cids) < num_clients*self.CLIENT_FRACTION :
+                print(f"ONLY {len(sampled_cids)} CLINET SELECTED BY LEARNING !!!!!!!")
              
              for cid in sampled_cids :
                  available_cids.remove(cid)
              others = random.sample(available_cids, int(num_clients*self.CLIENT_FRACTION) - len(sampled_cids))
              sampled_cids.extend(others)
         print("sampled cids ----------------> ", sampled_cids)
+        self.round_start = time.time()
         return [self.clients[cid] for cid in sampled_cids]
 # Start Flower server
 fl.server.start_server(
     server_address="0.0.0.0:8080",
-    config=fl.server.ServerConfig(num_rounds=10,round_timeout=myClientManager.TIME_THRESHOLD),
+    config=fl.server.ServerConfig(num_rounds=20),
     client_manager=myClientManager(),
     strategy=strategy,
 )
