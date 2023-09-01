@@ -155,7 +155,13 @@ After the clients are selected, we might have a problem : <b>Less clients are se
 
 
 ## Conclusions
+This project implemented FEDMCCS which is a federated learning algorithm that selects clients based on a learning method.
 
 ### Advantages
-
+<li> Involving Better clients</li>
+<li> Learning the </li>
+<li> Satisfying Resource Constraints </li>
 ### Disadvantages
+<li> Might Give Sub-Optimal Results</li>
+<li> Fairness is unforseen</li>
+<li> If a client is not selected, there is a chance it would not be selected for the rest of the process</li>
