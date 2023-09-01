@@ -45,15 +45,11 @@ class myClientManager(fl.server.SimpleClientManager):
                             client):  # client = client_configs[cid]
         try : 
             historical_data = client["historical_data"]
-            # print("predicttttttttttttt------------------------------------------------")
             Util = {}
             for parameter in ["last_round_freq","last_round_mem","last_round_time","last_round_cores"] :
                 model = LinearRegression()
                 x = np.array(historical_data["last_round_dataset_size"]).reshape((-1, 1))
                 y = np.array(historical_data[parameter])
-
-                # print("last data set --------------> ", historical_data["last_round_dataset_size"])
-                # print(f"parammmmmmmmmmmmm {parameter} ------------> ", historical_data[parameter])
 
                 model.fit(x, y) 
                 y_pred = model.predict(np.array([client["dataset_size"]]).reshape((-1, 1)))
@@ -65,7 +61,6 @@ class myClientManager(fl.server.SimpleClientManager):
 
     def sufficientResources(self, client) :
         Util = self.predict_utilization(client)
-        # print(f"The util : {client}  ------------> ",Util)
         if Util['last_round_cores'] > self.CPU_BUDGET * client['cores'] : 
             print("no cores ---------> ",Util['last_round_cores'], self.CPU_BUDGET * client['cores'])
         if Util['last_round_freq'] > self.ENERGY_BUDGET * client['freq'] : 
@@ -138,7 +133,6 @@ class myClientManager(fl.server.SimpleClientManager):
         keylist = ["last_round_freq","last_round_mem","last_round_time","last_round_cores","last_round_dataset_size"]
 
         for cid in available_cids:
-            # print(f"my niggaaaaaaaaaaaaaa {cid}")
             config = GetPropertiesIns({"resource": "total/old"})
             serv_conf = self.clients[cid].get_properties(config, None).properties
 
@@ -153,7 +147,6 @@ class myClientManager(fl.server.SimpleClientManager):
             for key in keylist :
                     if key in serv_conf and key:
                         self.client_configs[cid]["historical_data"][key].append(serv_conf[key])
-            # print("cliennnnnnnnnnnnnnnnnnnnnnnnntttttttt  configs --------------> ",self.client_configs[cid])
             self.client_configs[cid]["dataset_size"] = serv_conf["dataset_size"]
 
         sampled_cids = []
@@ -167,10 +160,10 @@ class myClientManager(fl.server.SimpleClientManager):
             if len(sampled_cids) < num_clients*self.CLIENT_FRACTION :
                 print(f"ONLY {len(sampled_cids)} CLINET SELECTED BY LEARNING !!!!!!!")
              
-             for cid in sampled_cids :
-                 available_cids.remove(cid)
-             others = random.sample(available_cids, int(num_clients*self.CLIENT_FRACTION) - len(sampled_cids))
-             sampled_cids.extend(others)
+            for cid in sampled_cids :
+                available_cids.remove(cid)
+            others = random.sample(available_cids, int(num_clients*self.CLIENT_FRACTION) - len(sampled_cids))
+            sampled_cids.extend(others)
         print("sampled cids ----------------> ", sampled_cids)
         self.round_start = time.time()
         return [self.clients[cid] for cid in sampled_cids]

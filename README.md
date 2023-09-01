@@ -11,6 +11,39 @@ At first run the `python3 generate_clients.py` then run the `runner.sh` with bas
 
 If you get status code 137 it's likely caused by OOM killer. See `/var/log/kern.log`.
 
+## Client
+
+### Dataset
+
+To create non-IID data, we use the same method as [here](https://github.com/adap/flower/tree/embedded_devices_example_update); We simply split the dataset in random chunks and give each client each chunk. 
+
+To replicate the effect of ever expanding dataset, we at first start with half of the dataset and increase the size of it by 5% in each round. This continues until we reach the full dataset size. From then, the expansion stops.
+
+### Metrics
+
+Metrics are stored in client as well as server. When server requests a train, client spawns a watcher thread in order to record the frequency and memory usage while the training is in process. This is done via `psutil` program. These metrics are averaged and stored in client. When server requests the data from client, the data of the last round will be returned.
+
+### Training
+
+Training is done on MNIST dataset. Validation is done on the whole test dataset of MNIST (instead of a portion of it).
+
+### Data transmission
+
+Server can use `client.get_properties` in order to get the properties needed for client selection.
+
+## Proxy Meter
+
+Another piece of software is the proxy-meter. This tool is designed to simulate bandwidth and ping and report bandwidth usage. The usage follows:
+
+```
+--listen ADDRESS: On what port and interface should proxy listen on?
+--forward ADDRESS: Where should data be forwarded?
+--ping TIME: The simulated ping. Defaults to zero.
+--speed NUMBER: The speed of the data transfer. Defaults to zero. Use zero for unlimited. Units are bytes per second.
+```
+
+For each client, a separate proxy meter will be spawned. You can turn this feature off by using `generate_compose_file_direct` function in `generate_clients.py` file.
+
 ## Server
 
 The server runs on 0.0.0.0:8080 on the linux server.<br>
