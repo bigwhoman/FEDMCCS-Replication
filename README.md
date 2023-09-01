@@ -97,7 +97,8 @@ After the clients are selected, we might have a problem : <b>Less clients are se
 ### Convergence
 ![FEDMCCS and Random](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/f581f986-d3f5-4365-94ab-30d2425c9b02)
 
-![FEDMCCS and Random (1)](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/2679838e-e66a-4ef9-9f31-e30bf3481b9d)
+![FEDMCCS and Random (1)](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/3fd92f1c-89bc-4d7c-954c-3c747f1dd3bd)
+
 
 
 | Time   | FEDMCCS |   | Time   | Random |
