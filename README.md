@@ -16,12 +16,11 @@ The server
 
 ## Test results
 ### Round Duration
-![Round Duration](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/75c8635d-46f2-47dc-bcd4-53e37d199ebd)
+![Round Duration](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/6093db09-1974-4312-a492-7d6b28b5e945)
 
-As expected, the first rounds are near because
-<li> There is only two resu</li>
 
 ### Convergence
+![FEDMCCS and Random](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/f581f986-d3f5-4365-94ab-30d2425c9b02)
 
 ## Conclusions
 
