@@ -108,7 +108,8 @@ After the clients are selected, we might have a problem : <b>Less clients are se
 
 ## Test results
 ### Round Duration
-![Round Duration](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/6093db09-1974-4312-a492-7d6b28b5e945)
+![Round Duration](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/61ba26c5-161d-4556-869c-5d1e8c771a3e)
+
 | Round        | FEDMCCS | Random Select |
 |---------|---------|---------------|
 | round1  | 19.2    | 13.5          |
@@ -128,9 +129,9 @@ After the clients are selected, we might have a problem : <b>Less clients are se
 | round15 | 4194.4  | 5120.6        |
 
 ### Convergence
-![FEDMCCS and Random](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/f581f986-d3f5-4365-94ab-30d2425c9b02)
+![FEDMCCS and Random](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/e7b4ffde-fc32-4518-ab5c-df0776730490)
 
-![FEDMCCS and Random (1)](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/3fd92f1c-89bc-4d7c-954c-3c747f1dd3bd)
+![FEDMCCS and Random (1)](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/36282148-5bc9-4acd-90df-301322ee30a9)
 
 
 
