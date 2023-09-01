@@ -1,127 +1,177 @@
-# pylint: disable=too-many-arguments
-"""Defines the MNIST Flower Client and a function to instantiate it."""
-
-
+import warnings
 from collections import OrderedDict
-from typing import Callable, Dict, Tuple
+import os
+import psutil
+import time
+import threading
+import random
 
 import flwr as fl
 import torch
-from flwr.common.typing import NDArrays, Scalar
-from torch.utils.data import DataLoader
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.utils.data
+from torch.utils.data import DataLoader, Subset
+from torchvision.datasets import MNIST
+from torchvision.transforms import ToTensor
+from tqdm import tqdm
 
-import model
-from dataset import load_datasets
+# An array to keep the metrics of each trained data.
+# Data stored is (freq, mem, time (seconds), dataset size)
+epoch_metrics = []
 
+class StatLoggerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.cput_util_sum = 0
+        self.memory_sum = 0
+        self.sampled = 0
+        self.done = False
+    
+    def run(self):
+        while not self.done:
+            self.sampled += 1
+            self.memory_sum += psutil.Process().memory_info().rss
+            self.cput_util_sum += float(os.environ['FREQUENCY'])
+            time.sleep(1)
+
+
+# #############################################################################
+# 1. Regular PyTorch pipeline: nn.Module, train, test, and DataLoader
+# #############################################################################
+
+warnings.filterwarnings("ignore", category=UserWarning)
+DEVICE = torch.device("cpu")
+
+
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.linear1 = torch.nn.Linear(784, 512, bias=True)
+        self.linear2 = torch.nn.Linear(512, 512, bias=True)
+        self.linear3 = torch.nn.Linear(512, 10, bias=True)
+        self.dropout = nn.Dropout(p = 0.2)
+
+    def forward(self, input):
+        # Input is the picture so we flatten it just like before
+        input = input.view(-1, 784)
+        layer1 = nn.functional.relu(self.linear1(input))
+        layer1 = self.dropout(layer1)
+        layer2 = nn.functional.relu(self.linear2(layer1))
+        layer2 = self.dropout(layer2)
+        layer3 = self.linear3(layer2)
+        return layer3
+
+
+def train(net, trainloader, epochs):
+    """Train the model on the training set."""
+    # Create watcher thread
+    stat_watcher = StatLoggerThread()
+    stat_watcher.start()
+    start_time = time.time()
+    # Do the learning
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    for _ in range(epochs):
+        for images, labels in tqdm(trainloader):
+            optimizer.zero_grad()
+            criterion(net(images.to(DEVICE)), labels.to(DEVICE)).backward()
+            optimizer.step()
+    # Join the watcher thread
+    end_time = time.time()
+    stat_watcher.done = True
+    stat_watcher.join()
+    # Collect data
+    return (stat_watcher.cput_util_sum / stat_watcher.sampled, stat_watcher.memory_sum / stat_watcher.sampled, end_time - start_time, len(trainloader.dataset))
+
+
+def test(net, testloader):
+    """Validate the model on the test set."""
+    criterion = torch.nn.CrossEntropyLoss()
+    correct, loss = 0, 0.0
+    with torch.no_grad():
+        for images, labels in tqdm(testloader):
+            outputs = net(images.to(DEVICE))
+            labels = labels.to(DEVICE)
+            loss += criterion(outputs, labels).item()
+            correct += (torch.max(outputs.data, 1)[1] == labels).sum().item()
+    accuracy = correct / len(testloader.dataset)
+    return loss, accuracy
+
+
+# #############################################################################
+# 2. Federation of the pipeline with Flower
+# #############################################################################
+
+# Dynamic dataset
+SEED = int(os.environ['SEED'])
+NUM_CLIENTS = int(os.environ['TOTAL_CLIENTS'])
+CLIENT_ID = int(os.environ['CLIENT_ID'])
+assert CLIENT_ID < NUM_CLIENTS
+def load_dedicated_dataset():
+    # From https://github.com/adap/flower/commit/22c5d69c05d09fa0952a7fdd7d56bbab79dd8e59#diff-03eb371d0637fcf8311fb394b2d2bd9e9f749b5ddcb442f29f42a8bb99699f8eR103
+    dataset = MNIST("./data", train=True, download=True, transform=ToTensor())
+    num_images = len(dataset) // NUM_CLIENTS
+    partition_len = [num_images] * NUM_CLIENTS
+    partition_len[0] += len(dataset) - NUM_CLIENTS * partition_len[0]
+    print("------------------->",partition_len, NUM_CLIENTS,len(dataset))
+    return torch.utils.data.random_split(dataset, partition_len, torch.Generator().manual_seed(SEED))[CLIENT_ID]
+MASTER_DATASET = load_dedicated_dataset()
+ADDITION_RATE = len(MASTER_DATASET) // 10
+current_dataset_size = len(MASTER_DATASET) // 2
+
+# Load model
+net = Net().to(DEVICE)
+TEST_LOADER = DataLoader(MNIST("./data", train=False, download=True, transform=ToTensor()))
+
+# Define Flower client
 class FlowerClient(fl.client.NumPyClient):
-    """Standard Flower client for CNN training."""
+    def get_parameters(self, config):
+        return [val.cpu().numpy() for _, val in net.state_dict().items()]
 
-    def __init__(
-        self,
-        net: torch.nn.Module,
-        trainloader: DataLoader,
-        valloader: DataLoader,
-        device: torch.device,
-        num_epochs: int,
-        learning_rate: float,
-    ):
-        self.net = net
-        self.trainloader = trainloader
-        self.valloader = valloader
-        self.device = device
-        self.num_epochs = num_epochs
-        self.learning_rate = learning_rate
+    def set_parameters(self, parameters):
+        params_dict = zip(net.state_dict().keys(), parameters)
+        state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
+        net.load_state_dict(state_dict, strict=True)
 
-    def get_parameters(self, config: Dict[str, Scalar]) -> NDArrays:
-        """Returns the parameters of the current net."""
-        return [val.cpu().numpy() for _, val in self.net.state_dict().items()]
+    def get_properties(*args, **kwargs):
+        config = kwargs['config']
+        print("props called with", config)
+        result = {}
+        result["last_round"] = len(epoch_metrics)
+        if len(epoch_metrics) != 0:
+            result["last_round_freq"] = epoch_metrics[-1][0]
+            result["last_round_mem"] = epoch_metrics[-1][1]
+            result["last_round_time"] = epoch_metrics[-1][2]
+            result["last_round_cores"] = int(os.environ['CORES'])
+            result["last_round_dataset_size"] = epoch_metrics[-1][3]
+        result["freq"] = float(os.environ['FREQUENCY'])
+        result["mem"] = int(os.environ['MEMORY']) * 1024 * 1024
+        result["cores"] = int(os.environ['CORES'])
+        result["dataset_size"] = current_dataset_size
+        return result
 
-    def set_parameters(self, parameters: NDArrays) -> None:
-        """Changes the parameters of the model using the given ones."""
-        params_dict = zip(self.net.state_dict().keys(), parameters)
-        state_dict = OrderedDict({k: torch.Tensor(v) for k, v in params_dict})
-        self.net.load_state_dict(state_dict, strict=True)
-
-    def fit(
-        self, parameters: NDArrays, config: Dict[str, Scalar]
-    ) -> Tuple[NDArrays, int, Dict]:
-        """Implements distributed fit function for a given client."""
+    def fit(self, parameters, config):
+        global current_dataset_size
         self.set_parameters(parameters)
-        model.train(
-            self.net,
-            self.trainloader,
-            self.device,
-            epochs=self.num_epochs,
-            learning_rate=self.learning_rate,
-        )
-        return self.get_parameters({}), len(self.trainloader), {}
+        # Load the dataset of desired size
+        dataset_loader = DataLoader(Subset(MASTER_DATASET, list(range(current_dataset_size))), shuffle=True, batch_size=32)
+        train_metrics = train(net, dataset_loader, epochs=1)
+        # Save metrics
+        epoch_metrics.append(train_metrics)
+        print("Train", len(epoch_metrics), "done with params", epoch_metrics)
+        # Change the dataset size and resample
+        current_dataset_size = min(len(MASTER_DATASET), current_dataset_size + int(ADDITION_RATE * random.uniform(0.7, 1.3)))
+        print("Selected", current_dataset_size, "as dataset size")
+        return self.get_parameters(config={}), len(dataset_loader.dataset), {}
 
-    def evaluate(
-        self, parameters: NDArrays, config: Dict[str, Scalar]
-    ) -> Tuple[float, int, Dict]:
-        """Implements distributed evaluation for a given client."""
+    def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy = model.test(self.net, self.valloader, self.device)
-        return float(loss), len(self.valloader), {"accuracy": float(accuracy)}
+        loss, accuracy = test(net, TEST_LOADER)
+        return loss, len(TEST_LOADER.dataset), {"accuracy": accuracy}
 
-
-def gen_client_fn(
-    device: torch.device,
-    iid: bool,
-    balance: bool,
-    num_clients: int,
-    num_epochs: int,
-    batch_size: int,
-    learning_rate: float,
-) -> Tuple[Callable[[str], FlowerClient], DataLoader]:
-    """Generates the client function that creates the Flower Clients.
-
-    Parameters
-    ----------
-    device : torch.device
-        The device on which the the client will train on and test on.
-    iid : bool
-        The way to partition the data for each client, i.e. whether the data
-        should be independent and identically distributed between the clients
-        or if the data should first be sorted by labels and distributed by chunks
-        to each client (used to test the convergence in a worst case scenario)
-    balance : bool
-        Whether the dataset should contain an equal number of samples in each class,
-        by default True
-    num_clients : int
-        The number of clients present in the setup
-    num_epochs : int
-        The number of local epochs each client should run the training for before
-        sending it to the server.
-    batch_size : int
-        The size of the local batches each client trains on.
-    learning_rate : float
-        The learning rate for the SGD  optimizer of clients.
-
-    Returns
-    -------
-    Tuple[Callable[[str], FlowerClient], DataLoader]
-        A tuple containing the client function that creates Flower Clients and
-        the DataLoader that will be used for testing
-    """
-    trainloaders, valloaders, testloader = load_datasets(
-        iid=iid, balance=balance, num_clients=num_clients, batch_size=batch_size
-    )
-
-    def client_fn(cid: str) -> FlowerClient:
-        """Create a Flower client representing a single organization."""
-
-        # Load model
-        net = model.Net().to(device)
-
-        # Note: each client gets a different trainloader/valloader, so each client
-        # will train and evaluate on their own unique data
-        trainloader = trainloaders[int(cid)]
-        valloader = valloaders[int(cid)]
-
-        # Create a  single Flower client representing a single organization
-        return FlowerClient(
-            net, trainloader, valloader, device, num_epochs, learning_rate
-        )
-
-    return client_fn, testloader
+# Start Flower client
+fl.client.start_numpy_client(
+    server_address="host.docker.internal:" + os.environ['PORT'],
+    client=FlowerClient(),
+)

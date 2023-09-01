@@ -3,6 +3,6 @@ outputs/
 playground.ipynb
 multirun/
 __pycache__
-docker/data
-docker/proxy*
-docker/runner.sh
+data
+proxy*.txt
+runner.sh
