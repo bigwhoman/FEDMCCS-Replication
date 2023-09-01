@@ -14,6 +14,45 @@ If you get status code 137 it's likely caused by OOM killer. See `/var/log/kern.
 ## Server
 The server
 
+## Test Setup
+
+### HPC Server
+<li> Ubuntu 22.04</li>
+<li> Linux Kernel 5.15</li>
+<li> Docker 24.0.5</li>
+<li> CPU : AMD EPYC 7763 64-Core Processor</li>
+<li> CPU Cores : 12</li>
+
+### Client Configurations : 
+| **Client**   | **CPU Cores** | **Cpu Utilization** | **Memory Limit(MB)** | **Ping Latency(ms)** | **Bandwidth (Mbps)** |
+|----------|-----------|-----------------|------------------|------------------|------------------|
+| Client1  | 1         | 0.01            | 250              | 100              | 512              |
+| Client2  | 1         | 0.01            | 150              | 100              | 512              |
+| Client3  | 1         | 1               | 200              | no latency       | 1024             |
+| Client4  | 1         | 0.01            | 150              | 100              | 512              |
+| Client5  | 1         | 1               | 100              | 100              | 512              |
+| Client6  | 1         | 1               | 50               | 50               | 512              |
+| Client7  | 1         | 0.01            | 100              | 100              | 512              |
+| Client8  | 1         | 0.8             | No Limit         | no latency       | 1024             |
+| Client9  | 1         | 0.01            | 100              | 100              | 512              |
+| Client10 | 1         | 1               | 100              | 100              | 512              |
+| Client11 | 1         | 0.01            | 100              | 100              | 512              |
+
+### Resource Budget
+| **Resource**          	| **Budget** 	|
+|-------------------	|--------	|
+| Memory Budget     	| 0.8    	|
+| CPU Budget        	| 1      	|
+| Energy Budget     	| 1      	|
+| Time Threshold(s) 	| 20     	|
+
+### Other Parameters
+| **Parameter**                      	|     	|
+|------------------------------------	|-----	|
+| Client Fraction                    	| 0.5 	|
+| Number of Rounds                   	| 15  	|
+| Random Rounds  (Before Regression) 	| 5   	|
+
 ## Test results
 ### Round Duration
 ![Round Duration](https://github.com/bigwhoman/FEDMCCS-Replication/assets/79264715/6093db09-1974-4312-a492-7d6b28b5e945)
